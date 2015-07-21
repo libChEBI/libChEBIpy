@@ -12,6 +12,11 @@ from libchebipy._base_object import BaseObject
 class Structure(BaseObject):
     '''COMMENT'''
 
+    # Structure types:
+    InChIKey = 0
+    mol = 1
+    SMILES = 2
+
     def __init__(self, structure, typ, dimension):
         self.__structure__ = structure
         self.__typ__ = typ
@@ -32,10 +37,3 @@ class Structure(BaseObject):
     def get_dimension(self):
         '''Returns dimension'''
         return self.__dimension__
-
-
-class StructureType(object):
-    '''COMMENT'''
-    InChIKey = 0
-    mol = 1
-    SMILES = 2

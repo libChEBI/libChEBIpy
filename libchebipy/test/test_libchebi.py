@@ -13,8 +13,7 @@ import os
 import unittest
 
 from libchebipy import ChebiEntity, ChebiException, Comment, CompoundOrigin, \
-    DatabaseAccession, Formula, Name, Reference, Relation, Structure, \
-    StructureType
+    DatabaseAccession, Formula, Name, Reference, Relation, Structure
 
 from libchebipy._parsers import _get_charge, _get_comments, \
     _get_compound_origins, _get_created_by, _get_database_accessions, \
@@ -115,16 +114,6 @@ class TestChebiEntity(unittest.TestCase):
                                datetime.datetime.strptime('2005-03-18',
                                                           '%Y-%M-%d'))
         self.assertTrue(this_comment in this_chebi_entity.get_comments())
-
-
-    def test_get_status_existing(self):
-        '''COMMENT'''
-        self.assertEqual(self.existing._get_status(), 'C')
-
-
-    def test_get_status_secondary(self):
-        '''COMMENT'''
-        self.assertEqual(self.secondary._get_status(), 'C')
 
 
     def test_get_source_existing(self):
@@ -511,8 +500,8 @@ class TestCompoundsParser(unittest.TestCase):
 
     def test_get_name(self):
         '''COMMENT'''
-        name = '3-(1H-indol-3-yl)-4-{1-[(2R)-2-(1-methylpyrrolidin-2-yl)ethyl]-1H-indol-3-yl}-1H-pyrrole-2,5-dione'
-        self.assertEquals(name, _get_name(41097))
+        name = '3,7-DIHYDROXY-2-NAPHTHOIC ACID'
+        self.assertEquals(name, _get_name(41106))
 
 
     def test_get_name_neg(self):
@@ -633,8 +622,8 @@ class TestInchiParser(unittest.TestCase):
 
     def test_get_inchi(self):
         '''COMMENT'''
-        inchi = 'InChI=1S/C26H35F3O6/c1-17(2)35-25(33)11-6-4-3-5-10-21-22(24(32)15-23(21)31)13-12-19(30)16-34-20-9-7-8-18(14-20)26(27,28)29/h3,5,7-9,12-14,17,19,21-24,30-32H,4,6,10-11,15-16H2,1-2H3/b5-3-,13-12+/t19-,21-,22-,23+,24-/m1/s1'
-        self.assertEqual(_get_inchi(746859), inchi)
+        inchi = 'InChI=1S/H2O/h1H2'
+        self.assertEqual(_get_inchi(15377), inchi)
 
 
     def test_get_inchi_neg(self):
@@ -703,7 +692,7 @@ class TestRelationParser(unittest.TestCase):
 
     def test_get_outgoings_size(self):
         '''COMMENT'''
-        self.assertTrue(3 < len(_get_outgoings(4167)))
+        self.assertTrue(2 < len(_get_outgoings(4167)))
 
 
     def test_get_incomings_size(self):
@@ -760,7 +749,7 @@ class TestStructuresParser(unittest.TestCase):
         '''COMMENT'''
         this_structure = Structure(\
                             'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O', \
-                            StructureType.InChIKey, 1)
+                            Structure.InChIKey, 1)
         self.assertEquals(this_structure, \
                           _get_inchi_key(73938))
 
@@ -769,7 +758,7 @@ class TestStructuresParser(unittest.TestCase):
         '''COMMENT'''
         this_structure = Structure(\
                             'InChIKey=made_up', \
-                            StructureType.InChIKey, 1)
+                            Structure.InChIKey, 1)
         self.assertNotEquals(this_structure, \
                              _get_inchi_key(73938))
 
@@ -778,7 +767,7 @@ class TestStructuresParser(unittest.TestCase):
         '''COMMENT'''
         this_structure = Structure(\
                             'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O', \
-                            StructureType.mol, 1)
+                            Structure.mol, 1)
         self.assertNotEquals(this_structure, \
                              _get_inchi_key(73938))
 
@@ -787,7 +776,7 @@ class TestStructuresParser(unittest.TestCase):
         '''COMMENT'''
         this_structure = Structure(\
                             'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O', \
-                            StructureType.InChIKey, 123456)
+                            Structure.InChIKey, 123456)
         self.assertNotEquals(this_structure, \
                              _get_inchi_key(73938))
 
@@ -806,7 +795,7 @@ class TestStructuresParser(unittest.TestCase):
         '''COMMENT'''
         this_structure = Structure(\
                             'NC(=[NH2+])NCC[C@H](O)[C@H]([NH3+])C([O-])=O', \
-                            StructureType.SMILES, 1)
+                            Structure.SMILES, 1)
         self.assertEquals(this_structure, _get_smiles(73938))
 
 
@@ -860,7 +849,7 @@ class TestStructuresParser(unittest.TestCase):
                              + '.mol', 'r')
         mol_read = textfile_read.read()
         this_structure = Structure(mol_read, \
-                                             StructureType.mol, 2)
+                                             Structure.mol, 2)
         self.assertEquals(this_structure, _get_mol(chebi_id))
 
 

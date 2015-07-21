@@ -25,7 +25,6 @@ from libchebipy._name import Name as Name
 from libchebipy._reference import Reference as Reference
 from libchebipy._relation import Relation as Relation
 from libchebipy._structure import Structure as Structure
-from libchebipy._structure import StructureType as StructureType
 
 __ALL_IDS = {}
 __ALL_NAMES = {}
@@ -540,7 +539,7 @@ def _get_mol(chebi_id):
                         tokens = line.strip().split(',')
                         this_structure.append(tokens[0].replace('\"', ''))
                         return Structure(''.join(this_structure), \
-                                                   StructureType.mol, \
+                                                   Structure.mol, \
                                                    int(tokens[2][0]))
                     else:
                         # In Molfile:
@@ -580,11 +579,11 @@ def __parse_structures():
                 if tokens[3] == 'InChIKey':
                     __INCHI_KEYS[int(tokens[1])] = \
                         Structure(tokens[2], \
-                            StructureType.InChIKey, int(tokens[4][0]))
+                            Structure.InChIKey, int(tokens[4][0]))
                 elif tokens[3] == 'SMILES':
                     __SMILES[int(tokens[1])] = \
                         Structure(tokens[2], \
-                            StructureType.SMILES, int(tokens[4][0]))
+                            Structure.SMILES, int(tokens[4][0]))
 
 
 def __get_default_structure_ids():

@@ -7,16 +7,21 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 
 @author:  neilswainston
 '''
-from libchebipy._sourced_data import SourcedData as SourcedData
+from libchebipy._base_object import BaseObject as BaseObject
 
-class Formula(SourcedData):
+class Formula(BaseObject):
     '''COMMENT'''
 
     def __init__(self, formula, source):
         self.__formula = formula
-        SourcedData.__init__(self, source)
+        self.__source__ = source
 
 
     def get_formula(self):
         '''Returns formula'''
         return self.__formula
+
+
+    def get_source(self):
+        '''Returns source'''
+        return self.__source__

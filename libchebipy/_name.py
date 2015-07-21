@@ -7,17 +7,17 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 
 @author:  neilswainston
 '''
-from libchebipy._sourced_data import SourcedData as SourcedData
+from libchebipy._base_object import BaseObject as BaseObject
 
-class Name(SourcedData):
+class Name(BaseObject):
     '''COMMENT'''
 
     def __init__(self, name, typ, source, adapted, language):
         self.__name__ = name
-        self.__typ__e__ = typ
+        self.__typ__ = typ
+        self.__source__ = source
         self.__adapted__ = adapted
         self.__language__ = language
-        SourcedData.__init__(self, source)
 
 
     def get_name(self):
@@ -27,7 +27,7 @@ class Name(SourcedData):
 
     def get_type(self):
         '''Returns type'''
-        return self.__typ__e__
+        return self.__typ__
 
 
     def get_adapted(self):
@@ -38,3 +38,8 @@ class Name(SourcedData):
     def get_language(self):
         '''Returns language'''
         return self.__language__
+
+
+    def get_source(self):
+        '''Returns source'''
+        return self.__source__
