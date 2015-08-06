@@ -9,8 +9,9 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 from libchebipy._base_object import BaseObject as BaseObject
 
+
 class Comment(BaseObject):
-    '''COMMENT'''
+    '''Class representing a ChEBI comment.'''
 
     def __init__(self, datatype_id, datatype, text, created_on):
         self.__datatype___id__ = datatype_id
@@ -19,21 +20,17 @@ class Comment(BaseObject):
         self.__created_on__ = created_on
         BaseObject.__init__(self)
 
-
     def get_datatype_id(self):
         '''Returns datatype_id'''
         return self.__datatype___id__
-
 
     def get_datatype(self):
         '''Returns datatype'''
         return self.__datatype__
 
-
     def get_text(self):
         '''Returns text'''
         return self.__text__
-
 
     def get_created_on(self):
         '''Returns created_on'''

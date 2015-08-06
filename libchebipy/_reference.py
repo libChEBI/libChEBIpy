@@ -9,8 +9,9 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 from libchebipy._base_object import BaseObject as BaseObject
 
+
 class Reference(BaseObject):
-    '''COMMENT'''
+    '''Class representing a ChEBI reference.'''
 
     def __init__(self, reference_id, reference_db_name, location_in_ref=None,
                  reference_name=None):
@@ -20,21 +21,17 @@ class Reference(BaseObject):
         self.__reference_name__ = reference_name
         BaseObject.__init__(self)
 
-
     def get_reference_id(self):
         '''Returns reference_id'''
         return self.__reference_id__
-
 
     def get__reference_db_name(self):
         '''Returns _reference_db_name'''
         return self.__reference_db_name__
 
-
     def get_location_in_ref(self):
         '''Returns location_in_ref'''
         return self.__location_in_ref__
-
 
     def get_reference_name(self):
         '''Returns reference_name'''

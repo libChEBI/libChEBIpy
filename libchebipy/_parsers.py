@@ -19,7 +19,8 @@ import zipfile
 
 from libchebipy._comment import Comment as Comment
 from libchebipy._compound_origin import CompoundOrigin as CompoundOrigin
-from libchebipy._database_accession import DatabaseAccession as DatabaseAccession
+from libchebipy._database_accession import DatabaseAccession \
+    as DatabaseAccession
 from libchebipy._formula import Formula as Formula
 from libchebipy._name import Name as Name
 from libchebipy._reference import Reference as Reference
@@ -95,7 +96,7 @@ def __parse_chemical_data():
                 # depending upon the source database
                 chebi_id = int(tokens[1])
 
-                if not chebi_id in __FORMULAE:
+                if chebi_id not in __FORMULAE:
                     __FORMULAE[chebi_id] = []
 
                 # Append formula:
@@ -134,7 +135,7 @@ def __parse_comments():
             tokens = line.strip().split('\t')
             chebi_id = int(tokens[1])
 
-            if not chebi_id in __COMMENTS:
+            if chebi_id not in __COMMENTS:
                 __COMMENTS[chebi_id] = []
 
             # Append Comment:
@@ -144,7 +145,6 @@ def __parse_comments():
                           datetime.datetime.strptime(tokens[2], '%Y-%M-%d'))
 
             __COMMENTS[chebi_id].append(com)
-
 
 
 def _get_compound_origins(chebi_id):
@@ -157,8 +157,8 @@ def _get_compound_origins(chebi_id):
 
 def _get_all_compound_origins(chebi_ids):
     '''Returns all compound origins'''
-    all_compound_origins = [_get_compound_origins(chebi_id) for \
-                            chebi_id in chebi_ids]
+    all_compound_origins = [_get_compound_origins(chebi_id)
+                            for chebi_id in chebi_ids]
     return [x for sublist in all_compound_origins for x in sublist]
 
 
@@ -175,7 +175,7 @@ def __parse_compound_origins():
             if len(tokens) > 10:
                 chebi_id = int(tokens[1])
 
-                if not chebi_id in __COMPOUND_ORIGINS:
+                if chebi_id not in __COMPOUND_ORIGINS:
                     __COMPOUND_ORIGINS[chebi_id] = []
 
                 # Append CompoundOrigin:
@@ -246,8 +246,8 @@ def _get_modified_on(chebi_id):
 def _get_all_modified_on(chebi_ids):
     '''Returns all modified on'''
     all_modified_ons = [_get_modified_on(chebi_id) for chebi_id in chebi_ids]
-    all_modified_ons = [modified_on for modified_on in all_modified_ons if \
-                        modified_on is not None]
+    all_modified_ons = [modified_on for modified_on in all_modified_ons
+                        if modified_on is not None]
     return None if len(all_modified_ons) == 0 else sorted(all_modified_ons)[-1]
 
 
@@ -292,7 +292,8 @@ def __parse_compounds():
                 __put_all_ids(parent_id, chebi_id)
 
             __NAMES[chebi_id] = None if tokens[5] == 'null' else tokens[5]
-            __DEFINITIONS[chebi_id] = None if tokens[6] == 'null' else tokens[6]
+            __DEFINITIONS[chebi_id] = None if tokens[6] == 'null' \
+                else tokens[6]
             __MODIFIED_ONS[chebi_id] = None if tokens[7] == 'null' \
                 else datetime.datetime.strptime(tokens[7], '%Y-%m-%d')
             __CREATED_BYS[chebi_id] = None if tokens[8] == 'null' \
@@ -321,7 +322,7 @@ def _get_database_accessions(chebi_id):
 
 def _get_all_database_accessions(chebi_ids):
     '''Returns all database accessions'''
-    all_database_accessions = [_get_database_accessions(chebi_id) \
+    all_database_accessions = [_get_database_accessions(chebi_id)
                                for chebi_id in chebi_ids]
     return [x for sublist in all_database_accessions for x in sublist]
 
@@ -337,7 +338,7 @@ def __parse_database_accessions():
             tokens = line.strip().split('\t')
             chebi_id = int(tokens[1])
 
-            if not chebi_id in __DATABASE_ACCESSIONS:
+            if chebi_id not in __DATABASE_ACCESSIONS:
                 __DATABASE_ACCESSIONS[chebi_id] = []
 
             # Append DatabaseAccession:
@@ -391,7 +392,7 @@ def __parse_names():
             tokens = line.strip().split('\t')
             chebi_id = int(tokens[1])
 
-            if not chebi_id in __ALL_NAMES:
+            if chebi_id not in __ALL_NAMES:
                 __ALL_NAMES[chebi_id] = []
 
             # Append Name:
@@ -482,10 +483,10 @@ def __parse_relation():
         target_chebi_id = int(vertices[tokens[2]])
         typ = tokens[1]
 
-        if not source_chebi_id in __OUTGOINGS:
+        if source_chebi_id not in __OUTGOINGS:
             __OUTGOINGS[source_chebi_id] = []
 
-        if not target_chebi_id in __INCOMINGS:
+        if target_chebi_id not in __INCOMINGS:
             __INCOMINGS[target_chebi_id] = []
 
         target_relation = Relation(typ, target_chebi_id, tokens[4])
@@ -527,20 +528,21 @@ def _get_mol(chebi_id):
         for line in textfile:
             if in_chebi_id or line[0].isdigit():
                 if re.match(chebi_id_regexp, line) \
-                and int(line.split(',')[0]) in __get_default_structure_ids():
+                    and int(line.split(',')[0]) \
+                        in __get_default_structure_ids():
                     tokens = line.strip().split(',')
                     in_chebi_id = True
                     this_structure = []
-                    this_structure.append(','.join(tokens[2:])\
+                    this_structure.append(','.join(tokens[2:])
                                           .replace('\"', ''))
                     this_structure.append('\n')
                 elif in_chebi_id:
                     if re.match(mol_file_end_regexp, line):
                         tokens = line.strip().split(',')
                         this_structure.append(tokens[0].replace('\"', ''))
-                        return Structure(''.join(this_structure), \
-                                                   Structure.mol, \
-                                                   int(tokens[2][0]))
+                        return Structure(''.join(this_structure),
+                                         Structure.mol,
+                                         int(tokens[2][0]))
                     else:
                         # In Molfile:
                         this_structure.append(line)
@@ -555,8 +557,8 @@ def _get_mol_filename(chebi_id):
     if mol is None:
         return None
 
-    file_descriptor, mol_filename = tempfile.mkstemp(str(chebi_id) \
-                                                     + '_', '.mol')
+    file_descriptor, mol_filename = tempfile.mkstemp(str(chebi_id) +
+                                                     '_', '.mol')
     mol_file = open(mol_filename, 'w')
     mol_file.write(mol.get_structure())
     mol_file.close()
@@ -578,12 +580,14 @@ def __parse_structures():
             if len(tokens) == 5:
                 if tokens[3] == 'InChIKey':
                     __INCHI_KEYS[int(tokens[1])] = \
-                        Structure(tokens[2], \
-                            Structure.InChIKey, int(tokens[4][0]))
+                        Structure(tokens[2],
+                                  Structure.InChIKey,
+                                  int(tokens[4][0]))
                 elif tokens[3] == 'SMILES':
                     __SMILES[int(tokens[1])] = \
-                        Structure(tokens[2], \
-                            Structure.SMILES, int(tokens[4][0]))
+                        Structure(tokens[2],
+                                  Structure.SMILES,
+                                  int(tokens[4][0]))
 
 
 def __get_default_structure_ids():
@@ -611,7 +615,8 @@ def _get_file(filename):
         if not os.path.exists(destination):
             os.makedirs(destination)
 
-        url = 'ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/'
+        url = 'ftp://ftp.ebi.ac.uk/pub/databases/chebi/' + \
+            'Flat_file_tab_delimited/'
         urllib.urlretrieve(urlparse.urljoin(url, filename), filepath)
 
     if filepath.endswith('.zip'):

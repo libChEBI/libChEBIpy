@@ -9,8 +9,9 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 from libchebipy._base_object import BaseObject
 
+
 class Structure(BaseObject):
-    '''COMMENT'''
+    '''Class representing a ChEBI structure.'''
 
     # Structure types:
     InChIKey = 0
@@ -23,16 +24,13 @@ class Structure(BaseObject):
         self.__dimension__ = dimension
         BaseObject.__init__(self)
 
-
     def get_structure(self):
         '''Returns structure'''
         return self.__structure__
 
-
     def get_type(self):
         '''Returns type'''
         return self.__typ__
-
 
     def get_dimension(self):
         '''Returns dimension'''

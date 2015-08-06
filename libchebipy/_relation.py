@@ -9,8 +9,9 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 from libchebipy._base_object import BaseObject as BaseObject
 
+
 class Relation(BaseObject):
-    '''COMMENT'''
+    '''Class representing a ChEBI relation.'''
 
     def __init__(self, typ, target_chebi_id, status):
         self.__typ__ = typ
@@ -18,16 +19,13 @@ class Relation(BaseObject):
         self.__status = status
         BaseObject.__init__(self)
 
-
     def get_type(self):
         '''Returns type'''
         return self.__typ__
 
-
     def get_target_chebi_id(self):
         '''Returns target_chebi_id'''
         return self.__target_chebi_id
-
 
     def get_status(self):
         '''Returns status'''

@@ -7,6 +7,8 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 
 @author:  neilswainston
 '''
+
+
 class BaseObject(object):
     '''COMMENT'''
 
@@ -16,10 +18,8 @@ class BaseObject(object):
         else:
             return False
 
-
     def __ne__(self, other):
         return not self.__eq__(other)
-
 
     def __repr__(self):
         return '%r' % (self.__dict__)

@@ -31,134 +31,111 @@ class TestChebiEntity(unittest.TestCase):
         self.existing = ChebiEntity(4167)
         self.secondary = ChebiEntity(5585)
 
-
     def test_get_non_existing(self):
         '''COMMENT'''
         self.assertRaises(ChebiException, ChebiEntity, -1)
-
 
     def test_get_id_existing(self):
         '''COMMENT'''
         self.assertTrue(self.existing.get_id() == 4167)
 
-
     def test_get_id_secondary(self):
         '''COMMENT'''
         self.assertTrue(self.secondary.get_id() == 5585)
-
 
     def test_get_formulae_existing(self):
         '''COMMENT'''
         this_formula = Formula('C6H12O6', 'KEGG COMPOUND')
         self.assertTrue(this_formula in self.existing.get_formulae())
 
-
     def test_get_formulae_secondary(self):
         '''COMMENT'''
         this_formula = Formula('H2O', 'ChEBI')
         self.assertTrue(this_formula in self.secondary.get_formulae())
 
-
     def test_get_formula_existing(self):
         '''COMMENT'''
         self.assertTrue(self.existing.get_formula() == 'C6H12O6')
-
 
     def test_get_formula_secondary(self):
         '''COMMENT'''
         self.assertTrue(self.secondary.get_formula() == 'H2O')
 
-
     def test_get_mass_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_mass(), 180.15588)
-
 
     def test_get_mass_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_mass(), 18.01530)
 
-
     def test_get_charge_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_charge(), 0)
-
 
     def test_get_charge_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_charge(), 0)
 
-
     def test_get_charge_secondary2(self):
         '''COMMENT'''
         self.assertEquals(-2, ChebiEntity(43474).get_charge())
-
 
     def test_get_comments_existing(self):
         '''COMMENT'''
         this_chebi_entity = ChebiEntity(29044)
         this_comment = Comment('General', 'General',
-                               'The substituent name \'3-oxoprop-2-enyl\' is ' \
+                               'The substituent name \'3-oxoprop-2-enyl\' is '
                                'incorrect but is used in various databases.',
                                datetime.datetime.strptime('2005-03-18',
                                                           '%Y-%M-%d'))
         self.assertTrue(this_comment in this_chebi_entity.get_comments())
-
 
     def test_get_comments_secondary(self):
         '''COMMENT'''
         this_chebi_entity = ChebiEntity(11505)
         this_comment = Comment('General', 'General',
-                               'The substituent name \'3-oxoprop-2-enyl\' is ' \
+                               'The substituent name \'3-oxoprop-2-enyl\' is '
                                'incorrect but is used in various databases.',
                                datetime.datetime.strptime('2005-03-18',
                                                           '%Y-%M-%d'))
         self.assertTrue(this_comment in this_chebi_entity.get_comments())
 
-
     def test_get_source_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_source(), 'KEGG COMPOUND')
-
 
     def test_get_source_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_source(), 'KEGG COMPOUND')
 
-
     def test_get_prnt_id_existing(self):
         '''COMMENT'''
         self.assertTrue(math.isnan(self.existing.get_parent_id()))
-
 
     def test_get_prnt_id_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_parent_id(), 15377)
 
-
     def test_get_name_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_name(), 'D-glucopyranose')
 
-
     def test_get_name_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_name(), 'water')
-
 
     def test_get_definition_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_definition(),
                          'A glucopyranose having D-configuration.')
 
-
     def test_get_definition_secondary(self):
         '''COMMENT'''
         this_chebi_entity = ChebiEntity(41140)
         self.assertEqual(this_chebi_entity.get_definition(),
-                         'D-Glucopyranose with beta configuration at the ' \
+                         'D-Glucopyranose with beta configuration at the '
                          'anomeric centre.')
-
 
     def test_get_mod_on_existing(self):
         '''COMMENT'''
@@ -166,77 +143,65 @@ class TestChebiEntity(unittest.TestCase):
                         datetime.datetime.strptime('2014-01-01',
                                                    '%Y-%M-%d'))
 
-
     def test_get_mod_on_secondary(self):
         '''COMMENT'''
         self.assertIsNotNone(self.secondary.get_modified_on())
-
 
     def test_get_created_by_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_created_by(), 'CHEBI')
 
-
     def test_get_created_by_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_created_by(), 'ops$mennis')
-
 
     def test_get_star_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_star(), 3)
 
-
     def test_get_star_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_star(), 3)
 
-
     def test_get_db_acc_existing(self):
         '''COMMENT'''
-        dat_acc = DatabaseAccession('MetaCyc accession', 'D-Glucose', 'MetaCyc')
+        dat_acc = DatabaseAccession('MetaCyc accession', 'D-Glucose',
+                                    'MetaCyc')
         self.assertTrue(dat_acc in self.existing.get_database_accessions())
-
 
     def test_get_db_acc_secondary(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('MetaCyc accession', 'WATER', 'MetaCyc')
         self.assertTrue(dat_acc in self.secondary.get_database_accessions())
 
-
     def test_get_inchi_existing(self):
         '''COMMENT'''
-        inchi = 'InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1'
+        inchi = 'InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/' + \
+            'h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1'
         self.assertEqual(self.existing.get_inchi(), inchi)
-
 
     def test_get_inchi_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_inchi(), 'InChI=1S/H2O/h1H2')
-
 
     def test_get_inchi_key_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_inchi_key(),
                          'InChIKey=WQZGKKKJIJFFOK-GASJEMHNSA-N')
 
-
     def test_get_inchi_key_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_inchi_key(),
                          'InChIKey=XLYOFNOQVPJJNP-UHFFFAOYSA-N')
-
 
     def test_get_smiles_existing(self):
         '''COMMENT'''
         self.assertEqual(self.existing.get_smiles(),
                          'OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O')
 
-
     def test_get_smiles_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_smiles(), '[H]O[H]')
-
 
     def test_get_mol_existing(self):
         '''COMMENT'''
@@ -245,17 +210,14 @@ class TestChebiEntity(unittest.TestCase):
         self.assertEqual(this_chebi_entity.get_mol(),
                          _read_mol_file(chebi_id))
 
-
     def test_get_mol_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.secondary.get_mol(), _read_mol_file(15377))
-
 
     def test_get_mol_file_existing(self):
         '''COMMENT'''
         chebi_id = 73938
         self.__test_get_mol_file(chebi_id, chebi_id)
-
 
     def test_get_mol_file_secondary(self):
         '''COMMENT'''
@@ -263,37 +225,33 @@ class TestChebiEntity(unittest.TestCase):
         retrieved_id = 42857
         self.__test_get_mol_file(read_id, retrieved_id)
 
-
     def test_get_names_existing(self):
         '''COMMENT'''
-        this_name = Name('Grape sugar', 'SYNONYM', 'KEGG COMPOUND', False, 'en')
+        this_name = Name('Grape sugar', 'SYNONYM', 'KEGG COMPOUND', False,
+                         'en')
         self.assertTrue(this_name in self.existing.get_names())
-
 
     def test_get_names_secondary(self):
         '''COMMENT'''
         this_name = Name('eau', 'SYNONYM', 'ChEBI', False, 'fr')
         self.assertTrue(this_name in self.secondary.get_names())
 
-
     def test_get_references_existing(self):
         '''COMMENT'''
         this_chebi_entity = ChebiEntity(15347)
         this_reference = Reference('WO2006008754', 'Patent', '',
-                                   'NOVEL INTERMEDIATES FOR LINEZOLID ' \
+                                   'NOVEL INTERMEDIATES FOR LINEZOLID '
                                    'AND RELATED COMPOUNDS')
 
         self.assertTrue(this_reference in this_chebi_entity.get_references())
-
 
     def test_get_references_secondary(self):
         '''COMMENT'''
         this_chebi_entity = ChebiEntity(22182)
         this_reference = Reference('WO2006008754', 'Patent', '',
-                                   'NOVEL INTERMEDIATES FOR LINEZOLID ' \
+                                   'NOVEL INTERMEDIATES FOR LINEZOLID '
                                    'AND RELATED COMPOUNDS')
         self.assertTrue(this_reference in this_chebi_entity.get_references())
-
 
     def test_get_cmp_orig_existing(self):
         '''COMMENT'''
@@ -303,7 +261,6 @@ class TestChebiEntity(unittest.TestCase):
         self.assertTrue(this_compound_origin
                         in self.existing.get_compound_origins())
 
-
     def test_get_cmp_orig_secondary(self):
         '''COMMENT'''
         this_compound_origin = CompoundOrigin('Homo sapiens', 'NCBI:9606',
@@ -312,30 +269,25 @@ class TestChebiEntity(unittest.TestCase):
         self.assertTrue(this_compound_origin
                         in self.secondary.get_compound_origins())
 
-
     def test_get_out_existing(self):
         '''COMMENT'''
         this_relation = Relation('is_a', 17634, 'C')
         self.assertTrue(this_relation in self.existing.get_outgoings())
-
 
     def test_get_out_secondary(self):
         '''COMMENT'''
         this_relation = Relation('has_role', 48360, 'C')
         self.assertTrue(this_relation in self.secondary.get_outgoings())
 
-
     def test_get_in_existing(self):
         '''COMMENT'''
         this_relation = Relation('has_functional_parent', 15866, 'C')
         self.assertTrue(this_relation in self.existing.get_incomings())
 
-
     def test_get_in_secondary(self):
         '''COMMENT'''
         this_relation = Relation('is_conjugate_acid_of', 29412, 'C')
         self.assertTrue(this_relation in self.secondary.get_incomings())
-
 
     def __test_get_mol_file(self, read_id, retrieved_id):
         '''COMMENT'''
@@ -354,38 +306,31 @@ class TestChemicalDataParser(unittest.TestCase):
         '''COMMENT'''
         self.assertTrue(1 < len(_get_formulae(6504)))
 
-
     def test_get_formulae_size_neg(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_formulae(-1)))
 
-
     def test_get_formulae(self):
         '''COMMENT'''
-        self.assertTrue(Formula('C8H11NO3', 'KEGG COMPOUND') \
+        self.assertTrue(Formula('C8H11NO3', 'KEGG COMPOUND')
                         in _get_formulae(1))
-
 
     def test_get_formulae_neg(self):
         '''COMMENT'''
-        self.assertFalse(('C8H11NO3', 'KEGG COMPOUND') \
-                        in _get_formulae(-1))
-
+        self.assertFalse(('C8H11NO3', 'KEGG COMPOUND')
+                         in _get_formulae(-1))
 
     def test_get_mass(self):
         '''COMMENT'''
         self.assertEqual(338.20790, _get_mass(77120))
 
-
     def test_get_mass_neg(self):
         '''COMMENT'''
         self.assertTrue(math.isnan(_get_mass(-1)))
 
-
     def test_get_charge(self):
         '''COMMENT'''
         self.assertEquals(-4, _get_charge(77099))
-
 
     def test_get_charge_neg(self):
         '''COMMENT'''
@@ -399,16 +344,13 @@ class TestCommentsParser(unittest.TestCase):
         '''COMMENT'''
         self.assertTrue(3 < len(_get_comments(5407)))
 
-
     def test_get_comments_size_empty(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_comments(7)))
 
-
     def test_get_comments_size_neg(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_comments(-1)))
-
 
     def test_get_comments(self):
         '''COMMENT'''
@@ -418,7 +360,6 @@ class TestCommentsParser(unittest.TestCase):
                        'Z stereomer',
                        datetime.datetime.strptime('2006-09-01', '%Y-%M-%d')),
                       _get_comments(5407))
-
 
     def test_get_comments_neg(self):
         '''COMMENT'''
@@ -430,19 +371,15 @@ class TestCompoundOriginsParser(unittest.TestCase):
 
     def test_get_comp_orig_size(self):
         '''COMMENT'''
-        self.assertTrue(4 < \
-            len(_get_compound_origins(16415)))
-
+        self.assertTrue(4 < len(_get_compound_origins(16415)))
 
     def test_get_comp_orig_size_empty(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_compound_origins(1641)))
 
-
     def test_get_comp_orig_size_neg(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_compound_origins(-1)))
-
 
     def test_get_cmp_orig(self):
         '''COMMENT'''
@@ -454,10 +391,9 @@ class TestCompoundOriginsParser(unittest.TestCase):
                                    None,
                                    'PubMed Id',
                                    '21425845',
-                                   'Lyophilized mycelia extracted with mixture ' \
-                                    'of methanol and chloroform')
-        self.assertIn(comp_orig, \
-            _get_compound_origins(67813))
+                                   'Lyophilized mycelia extracted with '
+                                   'mixture of methanol and chloroform')
+        self.assertIn(comp_orig, _get_compound_origins(67813))
 
 
 class TestCompoundsParser(unittest.TestCase):
@@ -467,100 +403,81 @@ class TestCompoundsParser(unittest.TestCase):
         '''COMMENT'''
         self.assertEquals('C', _get_status(584977))
 
-
     def test_get_status_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_status(-1))
-
 
     def test_get_source(self):
         '''COMMENT'''
         self.assertEquals('ChEMBL', _get_source(718203))
 
-
     def test_get_source_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_source(-1))
-
 
     def test_get_parent_id(self):
         '''COMMENT'''
         self.assertEquals(34107, _get_parent_id(76262))
 
-
     def test_get_parent_id_neg(self):
         '''COMMENT'''
         self.assertTrue(math.isnan(_get_parent_id(-1)))
 
-
     def test_get_parent_id_undefined(self):
         '''COMMENT'''
         self.assertTrue(math.isnan(_get_parent_id(41100)))
-
 
     def test_get_name(self):
         '''COMMENT'''
         name = '3,7-DIHYDROXY-2-NAPHTHOIC ACID'
         self.assertEquals(name, _get_name(41106))
 
-
     def test_get_name_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_name(-1))
-
 
     def test_get_name_null(self):
         '''COMMENT'''
         self.assertIsNone(_get_name(7483))
 
-
     def test_get_definition(self):
         '''COMMENT'''
-        definition = 'A glycerophosphocholine having an unspecified acyl group ' \
-        'attached at the 2-position.'
+        definition = 'A glycerophosphocholine having an unspecified acyl ' + \
+            'group attached at the 2-position.'
         self.assertEquals(definition, _get_definition(11502))
-
 
     def test_get_definition_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_definition(-1))
 
-
     def test_get_definition_null(self):
         '''COMMENT'''
         self.assertIsNone(_get_definition(18945))
-
 
     def test_get_modified_on(self):
         '''COMMENT'''
         self.assertTrue(_get_modified_on(57857) >
                         datetime.datetime.strptime('2014-01-01', '%Y-%M-%d'))
 
-
     def test_get_modified_on_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_modified_on(-1))
-
 
     def test_get_modified_on_null(self):
         '''COMMENT'''
         self.assertIsNone(_get_modified_on(6981))
 
-
     def test_get_created_by(self):
         '''COMMENT'''
         self.assertEquals('CHEBI', _get_created_by(6030))
-
 
     def test_get_created_by_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_created_by(-1))
 
-
     def test_get_star(self):
         '''COMMENT'''
         self.assertEquals(3, _get_star(8082))
-
 
     def test_get_star_neg(self):
         '''COMMENT'''
@@ -574,34 +491,28 @@ class TestDatabaseAccessionParser(unittest.TestCase):
         '''COMMENT'''
         self.assertTrue(5 < len(_get_database_accessions(7)))
 
-
     def test_get_dat_acc_size_neg(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_database_accessions(-1)))
 
-
     def test_get_dat_acc_size_empty(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_database_accessions(60260)))
-
 
     def test_get_dat_acc(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('PubMed citation', '214717', 'SUBMITTER')
         self.assertIn(dat_acc, _get_database_accessions(60261))
 
-
     def test_get_dat_acc_neg_type(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('ChEBI', '214717', 'SUBMITTER')
         self.assertNotIn(dat_acc, _get_database_accessions(60261))
 
-
     def test_get_dat_acc_neg_acc_no(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('PubMed citation', '123456', 'SUBMITTER')
         self.assertNotIn(dat_acc, _get_database_accessions(60261))
-
 
     def test_get_dat_acc_neg_source(self):
         '''COMMENT'''
@@ -625,7 +536,6 @@ class TestInchiParser(unittest.TestCase):
         inchi = 'InChI=1S/H2O/h1H2'
         self.assertEqual(_get_inchi(15377), inchi)
 
-
     def test_get_inchi_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_inchi(-1))
@@ -638,16 +548,13 @@ class TestNamesParser(unittest.TestCase):
         '''COMMENT'''
         self.assertTrue(5 < len(_get_names(14)))
 
-
     def test_get_names_size_neg(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_names(-1)))
 
-
     def test_get_names_size_empty(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_names(81100)))
-
 
     def test_get_names(self):
         '''COMMENT'''
@@ -663,23 +570,19 @@ class TestReferenceParser(unittest.TestCase):
         '''COMMENT'''
         self.assertTrue(100 < len(_get_references([76181])))
 
-
     def test_get_references_size_neg(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_references([-1])))
 
-
     def test_get_references_size_empty(self):
         '''COMMENT'''
         self.assertEquals(0, len(_get_references([1])))
-
 
     def test_get_references(self):
         '''COMMENT'''
         ref = Reference('O13340', 'UniProt', 'CC - INDUCTION',
                         'Podosporapepsin')
         self.assertIn(ref, _get_references([27594]))
-
 
     def test_get_refs_three_tokens(self):
         '''COMMENT'''
@@ -694,37 +597,30 @@ class TestRelationParser(unittest.TestCase):
         '''COMMENT'''
         self.assertTrue(2 < len(_get_outgoings(4167)))
 
-
     def test_get_incomings_size(self):
         '''COMMENT'''
         self.assertTrue(19 < len(_get_incomings(4167)))
-
 
     def test_get_outgoings_neg_size(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_outgoings(-1)))
 
-
     def test_get_incomings_neg_size(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_incomings(-1)))
-
 
     def test_get_outgoings_empty_size(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_outgoings(1)))
 
-
     def test_get_incomings_empty_size(self):
         '''COMMENT'''
         self.assertTrue(0 == len(_get_incomings(1)))
-
 
     def test_get_outgoings(self):
         '''COMMENT'''
         rel = Relation('is_a', 17634, 'C')
         self.assertIn(rel, _get_outgoings(4167))
-
 
     def test_get_incomings(self):
         '''COMMENT'''
@@ -739,117 +635,98 @@ class TestStructuresParser(unittest.TestCase):
         '''COMMENT'''
         self.assertIsNone(_get_inchi_key(1))
 
-
     def test_get_inchi_key_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_inchi_key(-1))
 
-
     def test_get_inchi_key(self):
         '''COMMENT'''
-        this_structure = Structure(\
-                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O', \
+        this_structure = Structure(
+                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O',
                             Structure.InChIKey, 1)
-        self.assertEquals(this_structure, \
+        self.assertEquals(this_structure,
                           _get_inchi_key(73938))
-
 
     def test_get_inchi_key_neg_struct(self):
         '''COMMENT'''
-        this_structure = Structure(\
-                            'InChIKey=made_up', \
+        this_structure = Structure(
+                            'InChIKey=made_up',
                             Structure.InChIKey, 1)
-        self.assertNotEquals(this_structure, \
+        self.assertNotEquals(this_structure,
                              _get_inchi_key(73938))
-
 
     def test_get_inchi_key_neg_type(self):
         '''COMMENT'''
-        this_structure = Structure(\
-                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O', \
+        this_structure = Structure(
+                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O',
                             Structure.mol, 1)
-        self.assertNotEquals(this_structure, \
-                             _get_inchi_key(73938))
-
+        self.assertNotEquals(this_structure, _get_inchi_key(73938))
 
     def test_get_inchi_key_neg_dim(self):
         '''COMMENT'''
-        this_structure = Structure(\
-                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O', \
+        this_structure = Structure(
+                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O',
                             Structure.InChIKey, 123456)
-        self.assertNotEquals(this_structure, \
+        self.assertNotEquals(this_structure,
                              _get_inchi_key(73938))
-
 
     def test_get_smiles_missing(self):
         '''COMMENT'''
         self.assertIsNone(_get_smiles(1))
 
-
     def test_get_smiles_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_smiles(-1))
 
-
     def test_get_smiles(self):
         '''COMMENT'''
-        this_structure = Structure(\
-                            'NC(=[NH2+])NCC[C@H](O)[C@H]([NH3+])C([O-])=O', \
+        this_structure = Structure(
+                            'NC(=[NH2+])NCC[C@H](O)[C@H]([NH3+])C([O-])=O',
                             Structure.SMILES, 1)
         self.assertEquals(this_structure, _get_smiles(73938))
-
 
     def test_get_mol_missing(self):
         '''COMMENT'''
         self.assertIsNone(_get_mol(1))
 
-
     def test_get_mol_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_mol(-1))
-
 
     def test_get_mol(self):
         '''COMMENT'''
         self.__test_get_mol_id(73938)
 
-
     def test_get_mol_comma_name(self):
         '''COMMENT'''
         self.__test_get_mol_id(57587)
-
 
     def test_get_mol_file_missing(self):
         '''COMMENT'''
         self.assertIsNone(_get_mol_filename(1))
 
-
     def test_get_mol_file_neg(self):
         '''COMMENT'''
         self.assertIsNone(_get_mol_filename(-1))
-
 
     def test_get_mol_file(self):
         '''COMMENT'''
         directory = os.path.dirname(os.path.realpath(__file__))
         textfile_read = open(directory + '/ChEBI_73938.mol', 'r')
         mol_read = textfile_read.read()
-        textfile_retrieved = \
-            open(_get_mol_filename(73938), 'r')
+        textfile_retrieved = open(_get_mol_filename(73938), 'r')
         mol_retrieved = textfile_retrieved.read()
         textfile_read.close()
         textfile_retrieved.close()
         self.assertEquals(mol_read, mol_retrieved)
 
-
     def __test_get_mol_id(self, chebi_id):
         '''COMMENT'''
         directory = os.path.dirname(os.path.realpath(__file__))
-        textfile_read = open(directory + '/ChEBI_' + str(chebi_id) \
-                             + '.mol', 'r')
+        textfile_read = open(directory + '/ChEBI_' + str(chebi_id) +
+                             '.mol', 'r')
         mol_read = textfile_read.read()
-        this_structure = Structure(mol_read, \
-                                             Structure.mol, 2)
+        this_structure = Structure(mol_read, Structure.mol, 2)
         self.assertEquals(this_structure, _get_mol(chebi_id))
 
 
@@ -860,4 +737,3 @@ def _read_mol_file(chebi_id):
     mol_file_read = textfile_read.read()
     textfile_read.close()
     return mol_file_read
-    

@@ -26,37 +26,31 @@ class ChebiException(Exception):
 
 
 class ChebiEntity(BaseObject):
-    '''COMMENT'''
+    '''Class representing a single entity in the ChEBI database.'''
 
     def __init__(self, chebi_id):
-        '''COMMENT'''
         self.__chebi_id__ = chebi_id
         self.__all_ids__ = None
 
         if self.get_name() is None:
             raise ChebiException('ChEBI id ' + str(chebi_id) + ' invalid')
 
-
     def get_id(self):
         '''Returns id'''
         return self.__chebi_id__
-
 
     def get_parent_id(self):
         '''Returns parent id'''
         return _get_parent_id(self.__chebi_id__)
 
-
     def get_formulae(self):
         '''Returns formulae'''
         return _get_all_formulae(self._get_all_ids())
-
 
     def get_formula(self):
         '''Returns formula'''
         formulae = self.get_formulae()
         return None if len(formulae) == 0 else formulae[0].get_formula()
-
 
     def get_mass(self):
         '''Returns mass'''
@@ -74,7 +68,6 @@ class ChebiEntity(BaseObject):
 
         return mass
 
-
     def get_charge(self):
         '''Returns charge'''
         charge = _get_charge(self.__chebi_id__)
@@ -91,16 +84,13 @@ class ChebiEntity(BaseObject):
 
         return charge
 
-
     def get_comments(self):
         '''Returns comments'''
         return _get_all_comments(self._get_all_ids())
 
-
     def get_source(self):
         '''Returns source'''
         return _get_source(self.__chebi_id__)
-
 
     def get_name(self):
         '''Returns name'''
@@ -113,11 +103,10 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 name = _get_name(parent_or_child_id)
 
-                if not name is None:
+                if name is not None:
                     break
 
         return name
-
 
     def get_definition(self):
         '''Returns definition'''
@@ -130,16 +119,14 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 definition = _get_definition(parent_or_child_id)
 
-                if not definition is None:
+                if definition is not None:
                     break
 
         return definition
 
-
     def get_modified_on(self):
         '''Returns modified on'''
         return _get_all_modified_on(self._get_all_ids())
-
 
     def get_created_by(self):
         '''Returns created by'''
@@ -152,22 +139,18 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 created_by = _get_created_by(parent_or_child_id)
 
-                if not created_by is None:
+                if created_by is not None:
                     break
 
         return created_by
-
 
     def get_star(self):
         '''Returns star'''
         return _get_star(self.__chebi_id__)
 
-
     def get_database_accessions(self):
         '''Returns database accessions'''
-        return _get_all_database_accessions(\
-                self._get_all_ids())
-
+        return _get_all_database_accessions(self._get_all_ids())
 
     def get_inchi(self):
         '''Returns inchi'''
@@ -180,11 +163,10 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 inchi = _get_inchi(parent_or_child_id)
 
-                if not inchi is None:
+                if inchi is not None:
                     break
 
         return inchi
-
 
     def get_inchi_key(self):
         '''Returns inchi key'''
@@ -197,11 +179,10 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 structure = _get_inchi_key(parent_or_child_id)
 
-                if not structure is None:
+                if structure is not None:
                     break
 
         return None if structure is None else structure.get_structure()
-
 
     def get_smiles(self):
         '''Returns smiles'''
@@ -214,11 +195,10 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 structure = _get_smiles(parent_or_child_id)
 
-                if not structure is None:
+                if structure is not None:
                     break
 
         return None if structure is None else structure.get_structure()
-
 
     def get_mol(self):
         '''Returns mol'''
@@ -231,11 +211,10 @@ class ChebiEntity(BaseObject):
             for parent_or_child_id in self._get_all_ids():
                 structure = _get_mol(parent_or_child_id)
 
-                if not structure is None:
+                if structure is not None:
                     break
 
         return None if structure is None else structure.get_structure()
-
 
     def get_mol_filename(self):
         '''Returns mol filename'''
@@ -249,49 +228,42 @@ class ChebiEntity(BaseObject):
                 mol_filename = \
                     _get_mol_filename(parent_or_child_id)
 
-                if not mol_filename is None:
+                if mol_filename is not None:
                     break
 
         return mol_filename
-
 
     def get_names(self):
         '''Returns names'''
         return _get_all_names(self._get_all_ids())
 
-
     def get_references(self):
         '''Returns references'''
         return _get_references(self._get_all_ids())
 
-
     def get_compound_origins(self):
         '''Returns compound origins'''
-        return _get_all_compound_origins(\
-            self._get_all_ids())
-
+        return _get_all_compound_origins(self._get_all_ids())
 
     def get_outgoings(self):
         '''Returns outgoings'''
         return _get_all_outgoings(self._get_all_ids())
 
-
     def get_incomings(self):
         '''Returns incomings'''
         return _get_all_incomings(self._get_all_ids())
-
 
     def _get_status(self):
         '''Returns status'''
         return _get_status(self.__chebi_id__)
 
-
     def _get_all_ids(self):
         '''Returns all ids'''
         if self.__all_ids__ is None:
             parent_id = self.get_parent_id()
-            self.__all_ids__ = _get_all_ids(\
-                    self.__chebi_id__ if math.isnan(parent_id) else parent_id)
+            self.__all_ids__ = _get_all_ids(self.__chebi_id__
+                                            if math.isnan(parent_id)
+                                            else parent_id)
 
             if self.__all_ids__ is None:
                 self.__all_ids__ = []
