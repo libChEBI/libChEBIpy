@@ -17,5 +17,4 @@ setup(name='libChEBIpy',
       author_email='neil.swainston@manchester.ac.uk',
       license='MIT',
       packages=['libchebipy'],
-      test_suite='libchebipy.test'
-)
+      test_suite='libchebipy.test')
