@@ -27,6 +27,7 @@ from libchebipy._reference import Reference as Reference
 from libchebipy._relation import Relation as Relation
 from libchebipy._structure import Structure as Structure
 
+
 __ALL_IDS = {}
 __ALL_NAMES = {}
 __COMMENTS = {}
@@ -51,7 +52,7 @@ __STARS = {}
 __STATUSES = {}
 
 
-def _get_formulae(chebi_id):
+def get_formulae(chebi_id):
     '''Returns formulae'''
     if len(__FORMULAE) == 0:
         __parse_chemical_data()
@@ -59,13 +60,13 @@ def _get_formulae(chebi_id):
     return __FORMULAE[chebi_id] if chebi_id in __FORMULAE else []
 
 
-def _get_all_formulae(chebi_ids):
+def get_all_formulae(chebi_ids):
     '''Returns all formulae'''
-    all_formulae = [_get_formulae(chebi_id) for chebi_id in chebi_ids]
+    all_formulae = [get_formulae(chebi_id) for chebi_id in chebi_ids]
     return [x for sublist in all_formulae for x in sublist]
 
 
-def _get_mass(chebi_id):
+def get_mass(chebi_id):
     '''Returns mass'''
     if len(__MASSES) == 0:
         __parse_chemical_data()
@@ -73,7 +74,7 @@ def _get_mass(chebi_id):
     return __MASSES[chebi_id] if chebi_id in __MASSES else float('NaN')
 
 
-def _get_charge(chebi_id):
+def get_charge(chebi_id):
     '''Returns charge'''
     if len(__CHARGES) == 0:
         __parse_chemical_data()
@@ -83,7 +84,7 @@ def _get_charge(chebi_id):
 
 def __parse_chemical_data():
     '''Gets and parses file'''
-    filename = _get_file('chemical_data.tsv')
+    filename = get_file('chemical_data.tsv')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -110,7 +111,7 @@ def __parse_chemical_data():
                 __CHARGES[int(tokens[1])] = int(tokens[4])
 
 
-def _get_comments(chebi_id):
+def get_comments(chebi_id):
     '''Returns comments'''
     if len(__COMMENTS) == 0:
         __parse_comments()
@@ -118,15 +119,15 @@ def _get_comments(chebi_id):
     return __COMMENTS[chebi_id] if chebi_id in __COMMENTS else []
 
 
-def _get_all_comments(chebi_ids):
+def get_all_comments(chebi_ids):
     '''Returns all comments'''
-    all_comments = [_get_comments(chebi_id) for chebi_id in chebi_ids]
+    all_comments = [get_comments(chebi_id) for chebi_id in chebi_ids]
     return [x for sublist in all_comments for x in sublist]
 
 
 def __parse_comments():
     '''Gets and parses file'''
-    filename = _get_file('comments.tsv')
+    filename = get_file('comments.tsv')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -147,7 +148,7 @@ def __parse_comments():
             __COMMENTS[chebi_id].append(com)
 
 
-def _get_compound_origins(chebi_id):
+def get_compound_origins(chebi_id):
     '''Returns compound origins'''
     if len(__COMPOUND_ORIGINS) == 0:
         __parse_compound_origins()
@@ -155,16 +156,16 @@ def _get_compound_origins(chebi_id):
         __COMPOUND_ORIGINS else []
 
 
-def _get_all_compound_origins(chebi_ids):
+def get_all_compound_origins(chebi_ids):
     '''Returns all compound origins'''
-    all_compound_origins = [_get_compound_origins(chebi_id)
+    all_compound_origins = [get_compound_origins(chebi_id)
                             for chebi_id in chebi_ids]
     return [x for sublist in all_compound_origins for x in sublist]
 
 
 def __parse_compound_origins():
     '''Gets and parses file'''
-    filename = _get_file('compound_origins.tsv')
+    filename = get_file('compound_origins.tsv')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -187,7 +188,7 @@ def __parse_compound_origins():
                 __COMPOUND_ORIGINS[chebi_id].append(comp_orig)
 
 
-def _get_status(chebi_id):
+def get_status(chebi_id):
     '''Returns status'''
     if len(__STATUSES) == 0:
         __parse_compounds()
@@ -195,7 +196,7 @@ def _get_status(chebi_id):
     return __STATUSES[chebi_id] if chebi_id in __STATUSES else None
 
 
-def _get_source(chebi_id):
+def get_source(chebi_id):
     '''Returns source'''
     if len(__SOURCES) == 0:
         __parse_compounds()
@@ -203,7 +204,7 @@ def _get_source(chebi_id):
     return __SOURCES[chebi_id] if chebi_id in __SOURCES else None
 
 
-def _get_parent_id(chebi_id):
+def get_parent_id(chebi_id):
     '''Returns parent id'''
     if len(__PARENT_IDS) == 0:
         __parse_compounds()
@@ -211,7 +212,7 @@ def _get_parent_id(chebi_id):
     return __PARENT_IDS[chebi_id] if chebi_id in __PARENT_IDS else float('NaN')
 
 
-def _get_all_ids(chebi_id):
+def get_all_ids(chebi_id):
     '''Returns all ids'''
     if len(__ALL_IDS) == 0:
         __parse_compounds()
@@ -219,7 +220,7 @@ def _get_all_ids(chebi_id):
     return __ALL_IDS[chebi_id] if chebi_id in __ALL_IDS else []
 
 
-def _get_name(chebi_id):
+def get_name(chebi_id):
     '''Returns name'''
     if len(__NAMES) == 0:
         __parse_compounds()
@@ -227,7 +228,7 @@ def _get_name(chebi_id):
     return __NAMES[chebi_id] if chebi_id in __NAMES else None
 
 
-def _get_definition(chebi_id):
+def get_definition(chebi_id):
     '''Returns definition'''
     if len(__DEFINITIONS) == 0:
         __parse_compounds()
@@ -235,7 +236,7 @@ def _get_definition(chebi_id):
     return __DEFINITIONS[chebi_id] if chebi_id in __DEFINITIONS else None
 
 
-def _get_modified_on(chebi_id):
+def get_modified_on(chebi_id):
     '''Returns modified on'''
     if len(__MODIFIED_ONS) == 0:
         __parse_compounds()
@@ -243,15 +244,15 @@ def _get_modified_on(chebi_id):
     return __MODIFIED_ONS[chebi_id] if chebi_id in __MODIFIED_ONS else None
 
 
-def _get_all_modified_on(chebi_ids):
+def get_all_modified_on(chebi_ids):
     '''Returns all modified on'''
-    all_modified_ons = [_get_modified_on(chebi_id) for chebi_id in chebi_ids]
+    all_modified_ons = [get_modified_on(chebi_id) for chebi_id in chebi_ids]
     all_modified_ons = [modified_on for modified_on in all_modified_ons
                         if modified_on is not None]
     return None if len(all_modified_ons) == 0 else sorted(all_modified_ons)[-1]
 
 
-def _get_created_by(chebi_id):
+def get_created_by(chebi_id):
     '''Returns created by'''
     if len(__CREATED_BYS) == 0:
         __parse_compounds()
@@ -259,7 +260,7 @@ def _get_created_by(chebi_id):
     return __CREATED_BYS[chebi_id] if chebi_id in __MODIFIED_ONS else None
 
 
-def _get_star(chebi_id):
+def get_star(chebi_id):
     '''Returns created by'''
     if len(__STARS) == 0:
         __parse_compounds()
@@ -269,7 +270,7 @@ def _get_star(chebi_id):
 
 def __parse_compounds():
     '''Gets and parses file'''
-    filename = _get_file('compounds.tsv.gz')
+    filename = get_file('compounds.tsv.gz')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -311,7 +312,7 @@ def __put_all_ids(parent_id, child_id):
         __ALL_IDS[parent_id] = [child_id]
 
 
-def _get_database_accessions(chebi_id):
+def get_database_accessions(chebi_id):
     '''Returns database accession'''
     if len(__DATABASE_ACCESSIONS) == 0:
         __parse_database_accessions()
@@ -320,16 +321,16 @@ def _get_database_accessions(chebi_id):
         __DATABASE_ACCESSIONS else []
 
 
-def _get_all_database_accessions(chebi_ids):
+def get_all_database_accessions(chebi_ids):
     '''Returns all database accessions'''
-    all_database_accessions = [_get_database_accessions(chebi_id)
+    all_database_accessions = [get_database_accessions(chebi_id)
                                for chebi_id in chebi_ids]
     return [x for sublist in all_database_accessions for x in sublist]
 
 
 def __parse_database_accessions():
     '''Gets and parses file'''
-    filename = _get_file('database_accession.tsv')
+    filename = get_file('database_accession.tsv')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -347,7 +348,7 @@ def __parse_database_accessions():
             __DATABASE_ACCESSIONS[chebi_id].append(dat_acc)
 
 
-def _get_inchi(chebi_id):
+def get_inchi(chebi_id):
     '''Returns InChI string'''
     if len(__INCHIS) == 0:
         __parse_inchi()
@@ -357,7 +358,7 @@ def _get_inchi(chebi_id):
 
 def __parse_inchi():
     '''Gets and parses file'''
-    filename = _get_file('chebiId_inchi.tsv')
+    filename = get_file('chebiId_inchi.tsv')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -367,7 +368,7 @@ def __parse_inchi():
             __INCHIS[int(tokens[0])] = tokens[1]
 
 
-def _get_names(chebi_id):
+def get_names(chebi_id):
     '''Returns names'''
     if len(__ALL_NAMES) == 0:
         __parse_names()
@@ -375,15 +376,15 @@ def _get_names(chebi_id):
     return __ALL_NAMES[chebi_id] if chebi_id in __ALL_NAMES else []
 
 
-def _get_all_names(chebi_ids):
+def get_all_names(chebi_ids):
     '''Returns all names'''
-    all_names = [_get_names(chebi_id) for chebi_id in chebi_ids]
+    all_names = [get_names(chebi_id) for chebi_id in chebi_ids]
     return [x for sublist in all_names for x in sublist]
 
 
 def __parse_names():
     '''Gets and parses file'''
-    filename = _get_file('names.tsv.gz')
+    filename = get_file('names.tsv.gz')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -405,12 +406,12 @@ def __parse_names():
             __ALL_NAMES[chebi_id].append(nme)
 
 
-def _get_references(chebi_ids):
+def get_references(chebi_ids):
     '''Returns references'''
     references = []
     chebi_ids = [str(chebi_id) for chebi_id in chebi_ids]
 
-    filename = _get_file('reference.tsv.gz')
+    filename = get_file('reference.tsv.gz')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -430,7 +431,7 @@ def _get_references(chebi_ids):
     return references
 
 
-def _get_outgoings(chebi_id):
+def get_outgoings(chebi_id):
     '''Returns outgoings'''
     if len(__OUTGOINGS) == 0:
         __parse_relation()
@@ -438,13 +439,13 @@ def _get_outgoings(chebi_id):
     return __OUTGOINGS[chebi_id] if chebi_id in __OUTGOINGS else []
 
 
-def _get_all_outgoings(chebi_ids):
+def get_all_outgoings(chebi_ids):
     '''Returns all outgoings'''
-    all_outgoings = [_get_outgoings(chebi_id) for chebi_id in chebi_ids]
+    all_outgoings = [get_outgoings(chebi_id) for chebi_id in chebi_ids]
     return [x for sublist in all_outgoings for x in sublist]
 
 
-def _get_incomings(chebi_id):
+def get_incomings(chebi_id):
     '''Returns incomings'''
     if len(__INCOMINGS) == 0:
         __parse_relation()
@@ -452,16 +453,16 @@ def _get_incomings(chebi_id):
     return __INCOMINGS[chebi_id] if chebi_id in __INCOMINGS else []
 
 
-def _get_all_incomings(chebi_ids):
+def get_all_incomings(chebi_ids):
     '''Returns all incomings'''
-    all_incomings = [_get_incomings(chebi_id) for chebi_id in chebi_ids]
+    all_incomings = [get_incomings(chebi_id) for chebi_id in chebi_ids]
     return [x for sublist in all_incomings for x in sublist]
 
 
 def __parse_relation():
     '''Gets and parses file'''
-    relation_filename = _get_file('relation.tsv')
-    vertice_filename = _get_file('vertice.tsv')
+    relation_filename = get_file('relation.tsv')
+    vertice_filename = get_file('vertice.tsv')
     relation_textfile = open(relation_filename, 'r')
     vertice_textfile = open(vertice_filename, 'r')
 
@@ -496,7 +497,7 @@ def __parse_relation():
         __INCOMINGS[target_chebi_id].append(source_relation)
 
 
-def _get_inchi_key(chebi_id):
+def get_inchi_key(chebi_id):
     '''Returns InChI key'''
     if len(__INCHI_KEYS) == 0:
         __parse_structures()
@@ -504,7 +505,7 @@ def _get_inchi_key(chebi_id):
     return __INCHI_KEYS[chebi_id] if chebi_id in __INCHI_KEYS else None
 
 
-def _get_smiles(chebi_id):
+def get_smiles(chebi_id):
     '''Returns InChI key'''
     if len(__SMILES) == 0:
         __parse_structures()
@@ -512,13 +513,13 @@ def _get_smiles(chebi_id):
     return __SMILES[chebi_id] if chebi_id in __SMILES else None
 
 
-def _get_mol(chebi_id):
+def get_mol(chebi_id):
     '''Returns mol'''
     chebi_id_regexp = '^\\d+\\,' + str(chebi_id) + '\\,.*'
     mol_file_end_regexp = '\",mol,\\dD'
     this_structure = []
 
-    filename = _get_file('structures.csv.gz')
+    filename = get_file('structures.csv.gz')
 
     with open(filename, 'r') as textfile:
         in_chebi_id = False
@@ -550,9 +551,9 @@ def _get_mol(chebi_id):
     return None
 
 
-def _get_mol_filename(chebi_id):
+def get_mol_filename(chebi_id):
     '''Returns mol file'''
-    mol = _get_mol(chebi_id)
+    mol = get_mol(chebi_id)
 
     if mol is None:
         return None
@@ -569,7 +570,7 @@ def _get_mol_filename(chebi_id):
 
 def __parse_structures():
     '''COMMENT'''
-    filename = _get_file('structures.csv.gz')
+    filename = get_file('structures.csv.gz')
 
     with open(filename, 'r') as textfile:
         next(textfile)
@@ -593,7 +594,7 @@ def __parse_structures():
 def __get_default_structure_ids():
     '''COMMENT'''
     if len(__DEFAULT_STRUCTURE_IDS) == 0:
-        filename = _get_file('default_structures.tsv')
+        filename = get_file('default_structures.tsv')
 
         with open(filename, 'r') as textfile:
             next(textfile)
@@ -605,7 +606,7 @@ def __get_default_structure_ids():
     return __DEFAULT_STRUCTURE_IDS
 
 
-def _get_file(filename):
+def get_file(filename):
     '''Downloads filename from ChEBI FTP site'''
     destination = os.path.join(os.path.expanduser('~'), 'libChEBI')
     filepath = os.path.join(destination, filename)

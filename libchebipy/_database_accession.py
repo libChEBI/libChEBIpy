@@ -14,18 +14,18 @@ class DatabaseAccession(BaseObject):
     '''Class representing a ChEBI database accession.'''
 
     def __init__(self, typ, accession_number, source):
-        self.__typ__ = typ
-        self.__accession_number__ = accession_number
-        self.__source__ = source
+        self.__typ = typ
+        self.__accession_number = accession_number
+        self.__source = source
 
     def get_type(self):
         '''Returns type'''
-        return self.__typ__
+        return self.__typ
 
     def get_accession_number(self):
         '''Returns accession number'''
-        return self.__accession_number__
+        return self.__accession_number
 
     def get_source(self):
         '''Returns source'''
-        return self.__source__
+        return self.__source

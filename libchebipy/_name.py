@@ -14,28 +14,28 @@ class Name(BaseObject):
     '''Class representing a ChEBI name.'''
 
     def __init__(self, name, typ, source, adapted, language):
-        self.__name__ = name
-        self.__typ__ = typ
-        self.__source__ = source
-        self.__adapted__ = adapted
-        self.__language__ = language
+        self.__name = name
+        self.__typ = typ
+        self.__source = source
+        self.__adapted = adapted
+        self.__language = language
 
     def get_name(self):
         '''Returns name'''
-        return self.__name__
+        return self.__name
 
     def get_type(self):
         '''Returns type'''
-        return self.__typ__
+        return self.__typ
 
     def get_adapted(self):
         '''Returns adapted'''
-        return self.__adapted__
+        return self.__adapted
 
     def get_language(self):
         '''Returns language'''
-        return self.__language__
+        return self.__language
 
     def get_source(self):
         '''Returns source'''
-        return self.__source__
+        return self.__source

@@ -14,24 +14,24 @@ class Comment(BaseObject):
     '''Class representing a ChEBI comment.'''
 
     def __init__(self, datatype_id, datatype, text, created_on):
-        self.__datatype___id__ = datatype_id
-        self.__datatype__ = datatype
-        self.__text__ = text
-        self.__created_on__ = created_on
+        self.__datatype_id = datatype_id
+        self.__datatype = datatype
+        self.__text = text
+        self.__created_on = created_on
         BaseObject.__init__(self)
 
     def get_datatype_id(self):
         '''Returns datatype_id'''
-        return self.__datatype___id__
+        return self.__datatype_id
 
     def get_datatype(self):
         '''Returns datatype'''
-        return self.__datatype__
+        return self.__datatype
 
     def get_text(self):
         '''Returns text'''
-        return self.__text__
+        return self.__text
 
     def get_created_on(self):
         '''Returns created_on'''
-        return self.__created_on__
+        return self.__created_on

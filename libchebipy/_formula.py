@@ -15,7 +15,7 @@ class Formula(BaseObject):
 
     def __init__(self, formula, source):
         self.__formula = formula
-        self.__source__ = source
+        self.__source = source
 
     def get_formula(self):
         '''Returns formula'''
@@ -23,4 +23,4 @@ class Formula(BaseObject):
 
     def get_source(self):
         '''Returns source'''
-        return self.__source__
+        return self.__source
