@@ -558,7 +558,7 @@ def get_mol_filename(chebi_id):
     if mol is None:
         return None
 
-    file_descriptor, mol_filename = tempfile.mkstemp(str(chebi_id) +
+    file_descriptor, mol_filename = tempfile.mkstemp(str(chebi_id) + 
                                                      '_', '.mol')
     mol_file = open(mol_filename, 'w')
     mol_file.write(mol.get_structure())
