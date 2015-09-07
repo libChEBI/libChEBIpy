@@ -182,12 +182,12 @@ class TestChebiEntity(unittest.TestCase):
     def test_get_inchi_key_existing(self):
         '''COMMENT'''
         self.assertEqual(self.__existing.get_inchi_key(),
-                         'InChIKey=WQZGKKKJIJFFOK-GASJEMHNSA-N')
+                         'WQZGKKKJIJFFOK-GASJEMHNSA-N')
 
     def test_get_inchi_key_secondary(self):
         '''COMMENT'''
         self.assertEqual(self.__secondary.get_inchi_key(),
-                         'InChIKey=XLYOFNOQVPJJNP-UHFFFAOYSA-N')
+                         'XLYOFNOQVPJJNP-UHFFFAOYSA-N')
 
     def test_get_smiles_existing(self):
         '''COMMENT'''
@@ -637,7 +637,7 @@ class TestStructuresParser(unittest.TestCase):
     def test_get_inchi_key(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O',
+                            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
                             Structure.InChIKey, 1)
         self.assertEquals(this_structure,
                           parsers.get_inchi_key(73938))
@@ -645,7 +645,7 @@ class TestStructuresParser(unittest.TestCase):
     def test_get_inchi_key_neg_struct(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'InChIKey=made_up',
+                            'made_up',
                             Structure.InChIKey, 1)
         self.assertNotEquals(this_structure,
                              parsers.get_inchi_key(73938))
@@ -653,14 +653,14 @@ class TestStructuresParser(unittest.TestCase):
     def test_get_inchi_key_neg_type(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O',
+                            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
                             Structure.mol, 1)
         self.assertNotEquals(this_structure, parsers.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_dim(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'InChIKey=VIDUVSPOWYVZIC-IMJSIDKUSA-O',
+                            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
                             Structure.InChIKey, 123456)
         self.assertNotEquals(this_structure,
                              parsers.get_inchi_key(73938))
