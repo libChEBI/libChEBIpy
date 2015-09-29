@@ -1,0 +1,7 @@
+/build/
+/dist/
+/libChEBIpy.egg-info/
+/**/.DS_Store
+/**/*.pyc
+/.project
+/.pydevproject
