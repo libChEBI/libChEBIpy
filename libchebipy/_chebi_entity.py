@@ -263,3 +263,19 @@ class ChebiEntity(BaseObject):
                 self.__all_ids = []
 
         return self.__all_ids
+
+
+def main():
+    '''Example code, showing the instantiation of a ChebiEntity, a call to
+    get_name(), get_outgoings() and the calling of a number of methods of the
+    returned Relation objects.'''
+    chebi_entity = ChebiEntity(15903)
+
+    print chebi_entity.get_name()
+
+    for outgoing in chebi_entity.get_outgoings():
+        target_chebi_entity = ChebiEntity(outgoing.get_target_chebi_id())
+        print outgoing.get_type() + '\t' + target_chebi_entity.get_name()
+
+if __name__ == '__main__':
+    main()
