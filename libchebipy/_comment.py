@@ -20,10 +20,6 @@ class Comment(BaseObject):
         self.__created_on = created_on
         BaseObject.__init__(self)
 
-    def get_datatype_id(self):
-        '''Returns datatype_id'''
-        return self.__datatype_id
-
     def get_datatype(self):
         '''Returns datatype'''
         return self.__datatype
@@ -35,3 +31,7 @@ class Comment(BaseObject):
     def get_created_on(self):
         '''Returns created_on'''
         return self.__created_on
+
+    def __get_datatype_id(self):
+        '''Returns datatype_id'''
+        return self.__datatype_id

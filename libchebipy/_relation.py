@@ -27,6 +27,6 @@ class Relation(BaseObject):
         '''Returns target_chebi_id'''
         return self.__target_chebi_id
 
-    def get_status(self):
+    def __get_status(self):
         '''Returns status'''
         return self.__status

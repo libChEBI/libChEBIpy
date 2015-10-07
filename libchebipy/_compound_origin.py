@@ -7,6 +7,8 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 
 @author:  neilswainston
 '''
+# pylint: disable=too-many-arguments, too-many-instance-attributes
+
 from libchebipy._base_object import BaseObject as BaseObject
 
 
@@ -39,10 +41,6 @@ class CompoundOrigin(BaseObject):
         '''Returns species_text'''
         return self.__species_text
 
-    def get_species_accession(self):
-        '''Returns species_accession'''
-        return self.__species_accession
-
     def get_component_text(self):
         '''Returns component_text'''
         return self.__component_text
@@ -70,3 +68,7 @@ class CompoundOrigin(BaseObject):
     def get_comments(self):
         '''Returns comments'''
         return self.__comments
+
+    def __get_species_accession(self):
+        '''Returns species_accession'''
+        return self.__species_accession
