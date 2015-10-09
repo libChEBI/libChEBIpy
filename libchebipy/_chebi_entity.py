@@ -23,19 +23,20 @@ class ChebiEntity(BaseObject):
     '''Class representing a single entity in the ChEBI database.'''
 
     def __init__(self, chebi_id):
-        self.__chebi_id = chebi_id
+        self.__chebi_id = int(chebi_id.replace('CHEBI:', ''))
         self.__all_ids = None
 
         if self.get_name() is None:
-            raise ChebiException('ChEBI id ' + str(chebi_id) + ' invalid')
+            raise ChebiException('ChEBI id ' + chebi_id + ' invalid')
 
     def get_id(self):
         '''Returns id'''
-        return self.__chebi_id
+        return 'CHEBI:' + str(self.__chebi_id)
 
     def get_parent_id(self):
         '''Returns parent id'''
-        return parsers.get_parent_id(self.__chebi_id)
+        parent_id = parsers.get_parent_id(self.__chebi_id)
+        return None if math.isnan(parent_id) else 'CHEBI:' + str(parent_id)
 
     def get_formulae(self):
         '''Returns formulae'''
@@ -254,7 +255,7 @@ class ChebiEntity(BaseObject):
     def __get_all_ids(self):
         '''Returns all ids'''
         if self.__all_ids is None:
-            parent_id = self.get_parent_id()
+            parent_id = parsers.get_parent_id(self.__chebi_id)
             self.__all_ids = parsers.get_all_ids(self.__chebi_id
                                                  if math.isnan(parent_id)
                                                  else parent_id)

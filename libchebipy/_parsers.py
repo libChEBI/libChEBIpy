@@ -490,8 +490,8 @@ def __parse_relation():
         if target_chebi_id not in __INCOMINGS:
             __INCOMINGS[target_chebi_id] = []
 
-        target_relation = Relation(typ, target_chebi_id, tokens[4])
-        source_relation = Relation(typ, source_chebi_id, tokens[4])
+        target_relation = Relation(typ, str(target_chebi_id), tokens[4])
+        source_relation = Relation(typ, str(source_chebi_id), tokens[4])
 
         __OUTGOINGS[source_chebi_id].append(target_relation)
         __INCOMINGS[target_chebi_id].append(source_relation)

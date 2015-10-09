@@ -23,20 +23,20 @@ class TestChebiEntity(unittest.TestCase):
 
     def setUp(self):
         '''COMMENT'''
-        self.__existing = ChebiEntity(4167)
-        self.__secondary = ChebiEntity(5585)
+        self.__existing = ChebiEntity('4167')
+        self.__secondary = ChebiEntity('CHEBI:5585')
 
     def test_get_non_existing(self):
         '''COMMENT'''
-        self.assertRaises(ChebiException, ChebiEntity, -1)
+        self.assertRaises(ChebiException, ChebiEntity, '-1')
 
     def test_get_id_existing(self):
         '''COMMENT'''
-        self.assertTrue(self.__existing.get_id() == 4167)
+        self.assertTrue(self.__existing.get_id() == 'CHEBI:4167')
 
     def test_get_id_secondary(self):
         '''COMMENT'''
-        self.assertTrue(self.__secondary.get_id() == 5585)
+        self.assertTrue(self.__secondary.get_id() == 'CHEBI:5585')
 
     def test_get_formulae_existing(self):
         '''COMMENT'''
@@ -74,11 +74,11 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_charge_secondary2(self):
         '''COMMENT'''
-        self.assertEquals(-2, ChebiEntity(43474).get_charge())
+        self.assertEquals(-2, ChebiEntity('43474').get_charge())
 
     def test_get_comments_existing(self):
         '''COMMENT'''
-        this_chebi_entity = ChebiEntity(29044)
+        this_chebi_entity = ChebiEntity('29044')
         this_comment = Comment('General', 'General',
                                'The substituent name \'3-oxoprop-2-enyl\' is '
                                'incorrect but is used in various databases.',
@@ -88,7 +88,7 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_comments_secondary(self):
         '''COMMENT'''
-        this_chebi_entity = ChebiEntity(11505)
+        this_chebi_entity = ChebiEntity('11505')
         this_comment = Comment('General', 'General',
                                'The substituent name \'3-oxoprop-2-enyl\' is '
                                'incorrect but is used in various databases.',
@@ -106,11 +106,11 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_prnt_id_existing(self):
         '''COMMENT'''
-        self.assertTrue(math.isnan(self.__existing.get_parent_id()))
+        self.assertIsNone(self.__existing.get_parent_id())
 
     def test_get_prnt_id_secondary(self):
         '''COMMENT'''
-        self.assertEqual(self.__secondary.get_parent_id(), 15377)
+        self.assertEqual(self.__secondary.get_parent_id(), 'CHEBI:15377')
 
     def test_get_name_existing(self):
         '''COMMENT'''
@@ -127,7 +127,7 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_definition_secondary(self):
         '''COMMENT'''
-        this_chebi_entity = ChebiEntity(41140)
+        this_chebi_entity = ChebiEntity('41140')
         self.assertEqual(this_chebi_entity.get_definition(),
                          'D-Glucopyranose with beta configuration at the '
                          'anomeric centre.')
@@ -201,7 +201,7 @@ class TestChebiEntity(unittest.TestCase):
     def test_get_mol_existing(self):
         '''COMMENT'''
         chebi_id = 73938
-        this_chebi_entity = ChebiEntity(chebi_id)
+        this_chebi_entity = ChebiEntity(str(chebi_id))
         self.assertEqual(this_chebi_entity.get_mol(),
                          _read_mol_file(chebi_id))
 
@@ -233,7 +233,7 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_references_existing(self):
         '''COMMENT'''
-        this_chebi_entity = ChebiEntity(15347)
+        this_chebi_entity = ChebiEntity('15347')
         this_reference = Reference('WO2006008754', 'Patent', '',
                                    'NOVEL INTERMEDIATES FOR LINEZOLID '
                                    'AND RELATED COMPOUNDS')
@@ -242,7 +242,7 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_references_secondary(self):
         '''COMMENT'''
-        this_chebi_entity = ChebiEntity(22182)
+        this_chebi_entity = ChebiEntity('22182')
         this_reference = Reference('WO2006008754', 'Patent', '',
                                    'NOVEL INTERMEDIATES FOR LINEZOLID '
                                    'AND RELATED COMPOUNDS')
@@ -266,28 +266,28 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_out_existing(self):
         '''COMMENT'''
-        this_relation = Relation('is_a', 17634, 'C')
+        this_relation = Relation('is_a', '17634', 'C')
         self.assertTrue(this_relation in self.__existing.get_outgoings())
 
     def test_get_out_secondary(self):
         '''COMMENT'''
-        this_relation = Relation('has_role', 48360, 'C')
+        this_relation = Relation('has_role', 'CHEBI:48360', 'C')
         self.assertTrue(this_relation in self.__secondary.get_outgoings())
 
     def test_get_in_existing(self):
         '''COMMENT'''
-        this_relation = Relation('has_functional_parent', 15866, 'C')
+        this_relation = Relation('has_functional_parent', 'CHEBI:15866', 'C')
         self.assertTrue(this_relation in self.__existing.get_incomings())
 
     def test_get_in_secondary(self):
         '''COMMENT'''
-        this_relation = Relation('is_conjugate_acid_of', 29412, 'C')
+        this_relation = Relation('is_conjugate_acid_of', '29412', 'C')
         self.assertTrue(this_relation in self.__secondary.get_incomings())
 
     def __get_mol_file(self, read_id, retrieved_id):
         '''COMMENT'''
         mol_read = _read_mol_file(read_id)
-        this_chebi_entity = ChebiEntity(retrieved_id)
+        this_chebi_entity = ChebiEntity(str(retrieved_id))
         textfile_retrieved = open(this_chebi_entity.get_mol_filename(), 'r')
         mol_retrieved = textfile_retrieved.read()
         textfile_retrieved.close()
@@ -614,12 +614,12 @@ class TestRelationParser(unittest.TestCase):
 
     def test_get_outgoings(self):
         '''COMMENT'''
-        rel = Relation('is_a', 17634, 'C')
+        rel = Relation('is_a', 'CHEBI:17634', 'C')
         self.assertIn(rel, parsers.get_outgoings(4167))
 
     def test_get_incomings(self):
         '''COMMENT'''
-        rel = Relation('has_functional_parent', 15866, 'C')
+        rel = Relation('has_functional_parent', '15866', 'C')
         self.assertIn(rel, parsers.get_incomings(4167))
 
 
