@@ -272,11 +272,11 @@ def main():
     returned Relation objects.'''
     chebi_entity = ChebiEntity(15903)
 
-    print chebi_entity.get_name()
+    print(chebi_entity.get_name())
 
     for outgoing in chebi_entity.get_outgoings():
         target_chebi_entity = ChebiEntity(outgoing.get_target_chebi_id())
-        print outgoing.get_type() + '\t' + target_chebi_entity.get_name()
+        print(outgoing.get_type() + '\t' + target_chebi_entity.get_name())
 
 if __name__ == '__main__':
     main()

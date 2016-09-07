@@ -13,8 +13,8 @@ import gzip
 import os.path
 import re
 import tempfile
-import urllib
-import urlparse
+from six.moves.urllib.request import urlretrieve
+import six.moves.urllib.parse as urlparse
 import zipfile
 
 from libchebipy._comment import Comment as Comment
@@ -618,7 +618,7 @@ def get_file(filename):
 
         url = 'ftp://ftp.ebi.ac.uk/pub/databases/chebi/' + \
             'Flat_file_tab_delimited/'
-        urllib.urlretrieve(urlparse.urljoin(url, filename), filepath)
+        urlretrieve(urlparse.urljoin(url, filename), filepath)
 
     if filepath.endswith('.zip'):
         zfile = zipfile.ZipFile(filepath, 'r')
