@@ -15,7 +15,18 @@ import unittest
 
 from libchebipy import ChebiEntity, ChebiException, Comment, CompoundOrigin, \
     DatabaseAccession, Formula, Name, Reference, Relation, Structure
+import libchebipy
+
 import libchebipy._parsers as parsers
+
+
+class Test(unittest.TestCase):
+    '''Test class for libchebipy module.'''
+
+    def test_search(self):
+        '''Tests search method.'''
+        self.assertEqual(len(libchebipy.search('glucose', True)), 1)
+        self.assertGreater(len(libchebipy.search('glucose', False)), 1)
 
 
 class TestChebiEntity(unittest.TestCase):
@@ -637,31 +648,31 @@ class TestStructuresParser(unittest.TestCase):
     def test_get_inchi_key(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
-                            Structure.InChIKey, 1)
+            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
+            Structure.InChIKey, 1)
         self.assertEquals(this_structure,
                           parsers.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_struct(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'made_up',
-                            Structure.InChIKey, 1)
+            'made_up',
+            Structure.InChIKey, 1)
         self.assertNotEquals(this_structure,
                              parsers.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_type(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
-                            Structure.mol, 1)
+            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
+            Structure.mol, 1)
         self.assertNotEquals(this_structure, parsers.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_dim(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
-                            Structure.InChIKey, 123456)
+            'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
+            Structure.InChIKey, 123456)
         self.assertNotEquals(this_structure,
                              parsers.get_inchi_key(73938))
 
@@ -676,8 +687,8 @@ class TestStructuresParser(unittest.TestCase):
     def test_get_smiles(self):
         '''COMMENT'''
         this_structure = Structure(
-                            'NC(=[NH2+])NCC[C@H](O)[C@H]([NH3+])C([O-])=O',
-                            Structure.SMILES, 1)
+            'NC(=[NH2+])NCC[C@H](O)[C@H]([NH3+])C([O-])=O',
+            Structure.SMILES, 1)
         self.assertEquals(this_structure, parsers.get_smiles(73938))
 
     def test_get_mol_missing(self):
