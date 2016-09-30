@@ -7,7 +7,7 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 
 @author:  neilswainston
 '''
-from libchebipy._base_object import BaseObject as BaseObject
+from ._base_object import BaseObject
 
 
 class Comment(BaseObject):

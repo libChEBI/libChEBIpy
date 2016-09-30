@@ -11,17 +11,16 @@ import json
 from six.moves.urllib.parse import quote as url_quote
 from six.moves.urllib.request import urlopen
 
-from libchebipy._chebi_entity import ChebiEntity as ChebiEntity
-from libchebipy._chebi_entity import ChebiException as ChebiException
-from libchebipy._comment import Comment as Comment
-from libchebipy._compound_origin import CompoundOrigin as CompoundOrigin
-from libchebipy._database_accession import DatabaseAccession \
-    as DatabaseAccession
-from libchebipy._formula import Formula as Formula
-from libchebipy._name import Name as Name
-from libchebipy._reference import Reference as Reference
-from libchebipy._relation import Relation as Relation
-from libchebipy._structure import Structure as Structure
+from ._chebi_entity import ChebiEntity
+from ._chebi_entity import ChebiException
+from ._comment import Comment
+from ._compound_origin import CompoundOrigin
+from ._database_accession import DatabaseAccession
+from ._formula import Formula
+from ._name import Name
+from ._reference import Reference
+from ._relation import Relation
+from ._structure import Structure
 
 
 __all__ = [
