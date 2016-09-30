@@ -11,8 +11,8 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 # pylint: disable=too-many-public-methods
 import math
 
-from libchebipy._base_object import BaseObject
-import libchebipy._parsers as parsers
+from ._base_object import BaseObject
+from . import _parsers as parsers
 
 
 class ChebiException(Exception):

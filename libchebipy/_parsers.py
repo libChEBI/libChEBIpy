@@ -17,15 +17,14 @@ from six.moves.urllib.request import urlretrieve
 import six.moves.urllib.parse as urlparse
 import zipfile
 
-from libchebipy._comment import Comment as Comment
-from libchebipy._compound_origin import CompoundOrigin as CompoundOrigin
-from libchebipy._database_accession import DatabaseAccession \
-    as DatabaseAccession
-from libchebipy._formula import Formula as Formula
-from libchebipy._name import Name as Name
-from libchebipy._reference import Reference as Reference
-from libchebipy._relation import Relation as Relation
-from libchebipy._structure import Structure as Structure
+from ._comment import Comment
+from ._compound_origin import CompoundOrigin
+from ._database_accession import DatabaseAccession
+from ._formula import Formula
+from ._name import Name
+from ._reference import Reference
+from ._relation import Relation
+from ._structure import Structure
 
 
 __ALL_IDS = {}
