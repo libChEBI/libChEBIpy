@@ -8,8 +8,8 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 @author:  neilswainston
 '''
 import json
-import urllib
-import urllib2
+from six.moves.urllib.parse import quote as url_quote
+from six.moves.urllib.request import urlopen
 
 from libchebipy._chebi_entity import ChebiEntity as ChebiEntity
 from libchebipy._chebi_entity import ChebiException as ChebiException
@@ -28,9 +28,9 @@ from pandas.stats.interface import ols
 def search(term, exact=False):
     '''Searches ChEBI via ols.'''
     url = 'http://www.ebi.ac.uk/ols/api/search?ontology=chebi' + \
-        '&exact=' + str(exact) + '&queryFields=label&q=' + urllib.quote(term)
+        '&exact=' + str(exact) + '&queryFields=label&q=' + url_quote(term)
 
-    response = urllib2.urlopen(url)
+    response = urlopen(url)
     data = json.loads(response.read())
 
     return [ChebiEntity(doc['obo_id']) for doc in data['response']['docs']]
