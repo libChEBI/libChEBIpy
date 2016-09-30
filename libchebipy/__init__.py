@@ -22,7 +22,6 @@ from libchebipy._name import Name as Name
 from libchebipy._reference import Reference as Reference
 from libchebipy._relation import Relation as Relation
 from libchebipy._structure import Structure as Structure
-from pandas.stats.interface import ols
 
 
 def search(term, exact=False):
