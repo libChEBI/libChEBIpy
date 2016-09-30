@@ -24,6 +24,21 @@ from libchebipy._relation import Relation as Relation
 from libchebipy._structure import Structure as Structure
 
 
+__all__ = [
+    "ChebiEntity",
+    "ChebiException",
+    "Comment",
+    "CompoundOrigin",
+    "DatabaseAccession",
+    "Formula",
+    "Name",
+    "Reference",
+    "Relation",
+    "Structure",
+    "search",
+]
+
+
 def search(term, exact=False):
     '''Searches ChEBI via ols.'''
     url = 'http://www.ebi.ac.uk/ols/api/search?ontology=chebi' + \
