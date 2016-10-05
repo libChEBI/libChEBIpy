@@ -9,6 +9,7 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 from setuptools import find_packages, setup
 
+
 setup(name='libChEBIpy',
       version='1.0.4',
       description='libChEBIpy: a Python API for accessing the ChEBI database',

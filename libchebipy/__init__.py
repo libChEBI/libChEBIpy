@@ -8,6 +8,7 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 @author:  neilswainston
 '''
 import json
+
 from six.moves.urllib.parse import quote as url_quote
 from six.moves.urllib.request import urlopen
 

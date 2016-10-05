@@ -13,9 +13,10 @@ import gzip
 import os.path
 import re
 import tempfile
+import zipfile
+
 from six.moves.urllib.request import urlretrieve
 import six.moves.urllib.parse as urlparse
-import zipfile
 
 from ._comment import Comment
 from ._compound_origin import CompoundOrigin
@@ -639,7 +640,8 @@ def get_file(filename):
     elif filepath.endswith('.gz'):
         unzipped_filepath = filepath[:-len('.gz')]
 
-        if os.path.exists(unzipped_filepath) and __is_current(unzipped_filepath):
+        if os.path.exists(unzipped_filepath) \
+                and __is_current(unzipped_filepath):
             filepath = unzipped_filepath
         else:
             input_file = gzip.open(filepath, 'rb')
