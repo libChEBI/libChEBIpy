@@ -51,6 +51,19 @@ __STARS = {}
 __STATUSES = {}
 
 
+class __Settings(object):
+    download_cache_path = os.path.join(os.path.expanduser('~'), 'libChEBI')
+    auto_update = True
+
+
+def set_download_cache_path(path):
+    __Settings.download_cache_path = path
+
+
+def set_auto_update(auto_update):
+    __Settings.auto_update = auto_update
+
+
 def get_formulae(chebi_id):
     '''Returns formulae'''
     if len(__FORMULAE) == 0:
@@ -607,7 +620,7 @@ def __get_default_structure_ids():
 
 def get_file(filename):
     '''Downloads filename from ChEBI FTP site'''
-    destination = os.path.join(os.path.expanduser('~'), 'libChEBI')
+    destination = __Settings.download_cache_path
     filepath = os.path.join(destination, filename)
 
     if not __is_current(filepath):
@@ -626,7 +639,7 @@ def get_file(filename):
     elif filepath.endswith('.gz'):
         unzipped_filepath = filepath[:-len('.gz')]
 
-        if __is_current(unzipped_filepath):
+        if os.path.exists(unzipped_filepath) and __is_current(unzipped_filepath):
             filepath = unzipped_filepath
         else:
             input_file = gzip.open(filepath, 'rb')
@@ -644,6 +657,9 @@ def get_file(filename):
 
 def __is_current(filepath):
     '''Checks whether file is current'''
+    if not __Settings.auto_update:
+        return True
+
     if not os.path.isfile(filepath):
         return False
 
