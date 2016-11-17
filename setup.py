@@ -25,7 +25,7 @@ setup(name='libChEBIpy',
                    'Topic :: Software Development :: Build Tools',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python :: 2.7'
-                   ],
+      ],
       keywords='chemistry cheminformatics ChEBI',
       packages=find_packages(),
       test_suite='libchebipy.test',

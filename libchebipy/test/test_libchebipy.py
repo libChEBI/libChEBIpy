@@ -16,7 +16,6 @@ import unittest
 from libchebipy import ChebiEntity, ChebiException, Comment, CompoundOrigin, \
     DatabaseAccession, Formula, Name, Reference, Relation, Structure
 import libchebipy
-
 import libchebipy._parsers as parsers
 
 
@@ -310,11 +309,11 @@ class TestChemicalDataParser(unittest.TestCase):
 
     def test_get_formulae_size(self):
         '''COMMENT'''
-        self.assertTrue(1 < len(parsers.get_formulae(6504)))
+        self.assertTrue(len(parsers.get_formulae(6504)) > 1)
 
     def test_get_formulae_size_neg(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_formulae(-1)))
+        self.assertTrue(len(parsers.get_formulae(-1)) == 0)
 
     def test_get_formulae(self):
         '''COMMENT'''
@@ -348,15 +347,15 @@ class TestCommentsParser(unittest.TestCase):
 
     def test_get_comments_size(self):
         '''COMMENT'''
-        self.assertTrue(3 < len(parsers.get_comments(5407)))
+        self.assertTrue(len(parsers.get_comments(5407)) > 3)
 
     def test_get_comments_size_empty(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_comments(7)))
+        self.assertTrue(len(parsers.get_comments(7)) == 0)
 
     def test_get_comments_size_neg(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_comments(-1)))
+        self.assertTrue(len(parsers.get_comments(-1)) == 0)
 
     def test_get_comments(self):
         '''COMMENT'''
@@ -377,7 +376,7 @@ class TestCompoundOriginsParser(unittest.TestCase):
 
     def test_get_comp_orig_size(self):
         '''COMMENT'''
-        self.assertTrue(4 < len(parsers.get_compound_origins(16415)))
+        self.assertTrue(len(parsers.get_compound_origins(16415)) > 4)
 
     def test_get_comp_orig_size_empty(self):
         '''COMMENT'''
@@ -495,7 +494,7 @@ class TestDatabaseAccessionParser(unittest.TestCase):
 
     def test_get_dat_acc_size(self):
         '''COMMENT'''
-        self.assertTrue(5 < len(parsers.get_database_accessions(7)))
+        self.assertTrue(len(parsers.get_database_accessions(7)) > 5)
 
     def test_get_dat_acc_size_neg(self):
         '''COMMENT'''
@@ -552,7 +551,7 @@ class TestNamesParser(unittest.TestCase):
 
     def test_get_names_size(self):
         '''COMMENT'''
-        self.assertTrue(5 < len(parsers.get_names(14)))
+        self.assertTrue(len(parsers.get_names(14)) > 5)
 
     def test_get_names_size_neg(self):
         '''COMMENT'''
@@ -574,7 +573,7 @@ class TestReferenceParser(unittest.TestCase):
 
     def test_get_references_size(self):
         '''COMMENT'''
-        self.assertTrue(100 < len(parsers.get_references([76181])))
+        self.assertTrue(len(parsers.get_references([76181])) > 100)
 
     def test_get_references_size_neg(self):
         '''COMMENT'''
@@ -601,27 +600,27 @@ class TestRelationParser(unittest.TestCase):
 
     def test_get_outgoings_size(self):
         '''COMMENT'''
-        self.assertTrue(2 < len(parsers.get_outgoings(4167)))
+        self.assertTrue(len(parsers.get_outgoings(4167)) > 2)
 
     def test_get_incomings_size(self):
         '''COMMENT'''
-        self.assertTrue(19 < len(parsers.get_incomings(4167)))
+        self.assertTrue(len(parsers.get_incomings(4167)) > 19)
 
     def test_get_outgoings_neg_size(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_outgoings(-1)))
+        self.assertTrue(len(parsers.get_outgoings(-1)) == 0)
 
     def test_get_incomings_neg_size(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_incomings(-1)))
+        self.assertTrue(len(parsers.get_incomings(-1)) == 0)
 
     def test_get_outgoings_empty_size(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_outgoings(1)))
+        self.assertTrue(len(parsers.get_outgoings(1)) == 0)
 
     def test_get_incomings_empty_size(self):
         '''COMMENT'''
-        self.assertTrue(0 == len(parsers.get_incomings(1)))
+        self.assertTrue(len(parsers.get_incomings(1)) == 0)
 
     def test_get_outgoings(self):
         '''COMMENT'''
