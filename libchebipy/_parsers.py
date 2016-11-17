@@ -51,18 +51,18 @@ __SOURCES = {}
 __STARS = {}
 __STATUSES = {}
 
-
-class __Settings(object):
-    download_cache_path = os.path.join(os.path.expanduser('~'), 'libChEBI')
-    auto_update = True
+__DOWNLOAD_PARAMS = {'path': os.path.join(os.path.expanduser('~'), 'libChEBI'),
+                     'auto_update': True}
 
 
 def set_download_cache_path(path):
-    __Settings.download_cache_path = path
+    '''Sets download cache path.'''
+    __DOWNLOAD_PARAMS['path'] = path
 
 
 def set_auto_update(auto_update):
-    __Settings.auto_update = auto_update
+    '''Sets auto update flag.'''
+    __DOWNLOAD_PARAMS['auto_update'] = auto_update
 
 
 def get_formulae(chebi_id):
@@ -621,7 +621,7 @@ def __get_default_structure_ids():
 
 def get_file(filename):
     '''Downloads filename from ChEBI FTP site'''
-    destination = __Settings.download_cache_path
+    destination = __DOWNLOAD_PARAMS['path']
     filepath = os.path.join(destination, filename)
 
     if not __is_current(filepath):
@@ -659,7 +659,7 @@ def get_file(filename):
 
 def __is_current(filepath):
     '''Checks whether file is current'''
-    if not __Settings.auto_update:
+    if not __DOWNLOAD_PARAMS['auto_update']:
         return True
 
     if not os.path.isfile(filepath):
