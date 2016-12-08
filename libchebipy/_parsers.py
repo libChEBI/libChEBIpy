@@ -15,7 +15,7 @@ import re
 import tempfile
 import zipfile
 
-from six.moves.urllib.request import urlretrieve
+from six.moves.urllib.request import urlretrieve, urlcleanup
 import six.moves.urllib.parse as urlparse
 
 from ._comment import Comment
@@ -632,6 +632,7 @@ def get_file(filename):
         url = 'ftp://ftp.ebi.ac.uk/pub/databases/chebi/' + \
             'Flat_file_tab_delimited/'
         urlretrieve(urlparse.urljoin(url, filename), filepath)
+        urlcleanup()
 
     if filepath.endswith('.zip'):
         zfile = zipfile.ZipFile(filepath, 'r')
