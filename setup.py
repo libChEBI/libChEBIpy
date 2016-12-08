@@ -11,7 +11,7 @@ from setuptools import find_packages, setup
 
 
 setup(name='libChEBIpy',
-      version='1.0.4',
+      version='1.0.5',
       description='libChEBIpy: a Python API for accessing the ChEBI database',
       long_description='libChEBIpy: a Python API for accessing the ChEBI ' +
       'database',
