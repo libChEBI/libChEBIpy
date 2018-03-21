@@ -29,4 +29,4 @@ setup(name='libChEBIpy',
       keywords='chemistry cheminformatics ChEBI',
       packages=find_packages(),
       test_suite='libchebipy.test',
-      install_requires=['six'])
+      install_requires=['requests', 'six'])
