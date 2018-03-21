@@ -9,8 +9,7 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 import json
 
-from six.moves.urllib.parse import quote as url_quote
-from six.moves.urllib.request import urlopen
+import requests
 
 from ._chebi_entity import ChebiEntity
 from ._chebi_entity import ChebiException
@@ -44,10 +43,10 @@ __all__ = [
 
 def search(term, exact=False):
     '''Searches ChEBI via ols.'''
-    url = 'http://www.ebi.ac.uk/ols/api/search?ontology=chebi' + \
-        '&exact=' + str(exact) + '&queryFields=label&q=' + url_quote(term)
+    url = 'https://www.ebi.ac.uk/ols/api/search?ontology=chebi' + \
+        '&exact=' + str(exact) + '&queryFields=label&q=' + term
 
-    response = urlopen(url)
-    data = json.loads(response.read())
+    response = requests.get(url)
+    data = response.json()
 
     return [ChebiEntity(doc['obo_id']) for doc in data['response']['docs']]

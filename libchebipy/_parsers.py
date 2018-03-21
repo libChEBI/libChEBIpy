@@ -10,6 +10,7 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 import calendar
 import datetime
 import gzip
+import io
 import os.path
 import re
 import tempfile
@@ -99,7 +100,7 @@ def __parse_chemical_data():
     '''Gets and parses file'''
     filename = get_file('chemical_data.tsv')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -144,7 +145,7 @@ def __parse_comments():
     '''Gets and parses file'''
     filename = get_file('comments.tsv')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -182,7 +183,7 @@ def __parse_compound_origins():
     '''Gets and parses file'''
     filename = get_file('compound_origins.tsv')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -287,7 +288,7 @@ def __parse_compounds():
     '''Gets and parses file'''
     filename = get_file('compounds.tsv.gz')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -347,7 +348,7 @@ def __parse_database_accessions():
     '''Gets and parses file'''
     filename = get_file('database_accession.tsv')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -375,7 +376,7 @@ def __parse_inchi():
     '''Gets and parses file'''
     filename = get_file('chebiId_inchi.tsv')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -401,7 +402,7 @@ def __parse_names():
     '''Gets and parses file'''
     filename = get_file('names.tsv.gz')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -428,7 +429,7 @@ def get_references(chebi_ids):
 
     filename = get_file('reference.tsv.gz')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -536,7 +537,7 @@ def get_mol(chebi_id):
 
     filename = get_file('structures.csv.gz')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         in_chebi_id = False
 
         next(textfile)
@@ -587,7 +588,7 @@ def __parse_structures():
     '''COMMENT'''
     filename = get_file('structures.csv.gz')
 
-    with open(filename, 'r', encoding='cp1252') as textfile:
+    with io.open(filename, 'r', encoding='cp1252') as textfile:
         next(textfile)
 
         for line in textfile:
@@ -611,7 +612,7 @@ def __get_default_structure_ids():
     if len(__DEFAULT_STRUCTURE_IDS) == 0:
         filename = get_file('default_structures.tsv')
 
-        with open(filename, 'r', encoding='cp1252') as textfile:
+        with io.open(filename, 'r', encoding='cp1252') as textfile:
             next(textfile)
 
             for line in textfile:
