@@ -15,8 +15,8 @@ import re
 import tempfile
 import zipfile
 
-from six.moves.urllib.request import urlretrieve, urlcleanup
 import six.moves.urllib.parse as urlparse
+from six.moves.urllib.request import urlretrieve, urlcleanup
 
 from ._comment import Comment
 from ._compound_origin import CompoundOrigin
@@ -121,7 +121,9 @@ def __parse_chemical_data():
                 __MASSES[int(tokens[1])] = float(tokens[4])
 
             elif tokens[3] == 'CHARGE':
-                __CHARGES[int(tokens[1])] = int(tokens[4])
+                __CHARGES[int(tokens[1])] = int(tokens[4]
+                                                if tokens[4][-1] != '-'
+                                                else '-' + tokens[4][:-1])
 
 
 def get_comments(chebi_id):

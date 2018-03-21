@@ -26,6 +26,7 @@ class Test(unittest.TestCase):
         '''Tests search method.'''
         self.assertEqual(len(libchebipy.search('glucose', True)), 1)
         self.assertGreater(len(libchebipy.search('glucose', False)), 1)
+        self.assertGreater(len(libchebipy.search('aspartate', False)), 1)
 
 
 class TestChebiEntity(unittest.TestCase):
@@ -591,8 +592,13 @@ class TestReferenceParser(unittest.TestCase):
 
     def test_get_refs_three_tokens(self):
         '''COMMENT'''
-        ref = Reference('49658669', 'PubChem')
+        ref = Reference('SID: 49658669', 'PubChem')
         self.assertIn(ref, parsers.get_references([8]))
+
+    def test_get_refs_reported_problem(self):
+        '''Test reported problem:
+        https://github.com/libChEBI/libChEBIpy/issues/9.'''
+        self.assertTrue(libchebipy.ChebiEntity('4700'))
 
 
 class TestRelationParser(unittest.TestCase):
