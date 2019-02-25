@@ -24,9 +24,14 @@ class Test(unittest.TestCase):
 
     def test_search(self):
         '''Tests search method.'''
-        self.assertEqual(len(libchebipy.search('glucose', True)), 1)
+        self.assertEqual(len(libchebipy.search('glucose', True)), 2)
         self.assertGreater(len(libchebipy.search('glucose', False)), 1)
         self.assertGreater(len(libchebipy.search('aspartate', False)), 1)
+
+    def test_search_aspirin(self):
+        '''Test search method for aspirin.'''
+        results = libchebipy.search('aspirin', False)
+        self.assertIn(ChebiEntity('CHEBI:15365'), results)
 
 
 class TestChebiEntity(unittest.TestCase):

@@ -41,10 +41,11 @@ __all__ = [
 ]
 
 
-def search(term, exact=False):
+def search(term, exact=False, rows=1e6):
     '''Searches ChEBI via ols.'''
     url = 'https://www.ebi.ac.uk/ols/api/search?ontology=chebi' + \
-        '&exact=' + str(exact) + '&queryFields=label&q=' + term
+        '&exact=' + str(exact) + '&q=' + term + \
+        '&rows=' + str(int(rows))
 
     response = requests.get(url)
     data = response.json()
