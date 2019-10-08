@@ -478,26 +478,15 @@ def get_all_incomings(chebi_ids):
 def __parse_relation():
     '''Gets and parses file'''
     relation_filename = get_file('relation.tsv')
-    vertice_filename = get_file('vertice.tsv')
     relation_textfile = open(relation_filename, 'r')
-    vertice_textfile = open(vertice_filename, 'r')
-
-    # Parse vertice:
-    vertices = {}
-
-    next(vertice_textfile)
-
-    for line in vertice_textfile:
-        tokens = line.strip().split('\t')
-        vertices[tokens[0]] = tokens[1]
 
     next(relation_textfile)
 
     for line in relation_textfile:
         tokens = line.strip().split('\t')
 
-        source_chebi_id = int(vertices[tokens[3]])
-        target_chebi_id = int(vertices[tokens[2]])
+        source_chebi_id = int(tokens[3])
+        target_chebi_id = int(tokens[2])
         typ = tokens[1]
 
         if source_chebi_id not in __OUTGOINGS:
