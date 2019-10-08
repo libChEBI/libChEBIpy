@@ -68,7 +68,7 @@ def set_auto_update(auto_update):
 
 def get_formulae(chebi_id):
     '''Returns formulae'''
-    if len(__FORMULAE) == 0:
+    if not __FORMULAE:
         __parse_chemical_data()
 
     return __FORMULAE[chebi_id] if chebi_id in __FORMULAE else []
@@ -82,7 +82,7 @@ def get_all_formulae(chebi_ids):
 
 def get_mass(chebi_id):
     '''Returns mass'''
-    if len(__MASSES) == 0:
+    if not __MASSES:
         __parse_chemical_data()
 
     return __MASSES[chebi_id] if chebi_id in __MASSES else float('NaN')
@@ -90,7 +90,7 @@ def get_mass(chebi_id):
 
 def get_charge(chebi_id):
     '''Returns charge'''
-    if len(__CHARGES) == 0:
+    if not __CHARGES:
         __parse_chemical_data()
 
     return __CHARGES[chebi_id] if chebi_id in __CHARGES else float('NaN')
@@ -129,7 +129,7 @@ def __parse_chemical_data():
 
 def get_comments(chebi_id):
     '''Returns comments'''
-    if len(__COMMENTS) == 0:
+    if not __COMMENTS:
         __parse_comments()
 
     return __COMMENTS[chebi_id] if chebi_id in __COMMENTS else []
@@ -166,7 +166,7 @@ def __parse_comments():
 
 def get_compound_origins(chebi_id):
     '''Returns compound origins'''
-    if len(__COMPOUND_ORIGINS) == 0:
+    if not __COMPOUND_ORIGINS:
         __parse_compound_origins()
     return __COMPOUND_ORIGINS[chebi_id] if chebi_id in \
         __COMPOUND_ORIGINS else []
@@ -206,7 +206,7 @@ def __parse_compound_origins():
 
 def get_status(chebi_id):
     '''Returns status'''
-    if len(__STATUSES) == 0:
+    if not __STATUSES:
         __parse_compounds()
 
     return __STATUSES[chebi_id] if chebi_id in __STATUSES else None
@@ -214,7 +214,7 @@ def get_status(chebi_id):
 
 def get_source(chebi_id):
     '''Returns source'''
-    if len(__SOURCES) == 0:
+    if not __SOURCES:
         __parse_compounds()
 
     return __SOURCES[chebi_id] if chebi_id in __SOURCES else None
@@ -222,7 +222,7 @@ def get_source(chebi_id):
 
 def get_parent_id(chebi_id):
     '''Returns parent id'''
-    if len(__PARENT_IDS) == 0:
+    if not __PARENT_IDS:
         __parse_compounds()
 
     return __PARENT_IDS[chebi_id] if chebi_id in __PARENT_IDS else float('NaN')
@@ -230,7 +230,7 @@ def get_parent_id(chebi_id):
 
 def get_all_ids(chebi_id):
     '''Returns all ids'''
-    if len(__ALL_IDS) == 0:
+    if not __ALL_IDS:
         __parse_compounds()
 
     return __ALL_IDS[chebi_id] if chebi_id in __ALL_IDS else []
@@ -238,7 +238,7 @@ def get_all_ids(chebi_id):
 
 def get_name(chebi_id):
     '''Returns name'''
-    if len(__NAMES) == 0:
+    if not __NAMES:
         __parse_compounds()
 
     return __NAMES[chebi_id] if chebi_id in __NAMES else None
@@ -246,7 +246,7 @@ def get_name(chebi_id):
 
 def get_definition(chebi_id):
     '''Returns definition'''
-    if len(__DEFINITIONS) == 0:
+    if not __DEFINITIONS:
         __parse_compounds()
 
     return __DEFINITIONS[chebi_id] if chebi_id in __DEFINITIONS else None
@@ -254,7 +254,7 @@ def get_definition(chebi_id):
 
 def get_modified_on(chebi_id):
     '''Returns modified on'''
-    if len(__MODIFIED_ONS) == 0:
+    if not __MODIFIED_ONS:
         __parse_compounds()
 
     return __MODIFIED_ONS[chebi_id] if chebi_id in __MODIFIED_ONS else None
@@ -265,20 +265,20 @@ def get_all_modified_on(chebi_ids):
     all_modified_ons = [get_modified_on(chebi_id) for chebi_id in chebi_ids]
     all_modified_ons = [modified_on for modified_on in all_modified_ons
                         if modified_on is not None]
-    return None if len(all_modified_ons) == 0 else sorted(all_modified_ons)[-1]
+    return None if not all_modified_ons else sorted(all_modified_ons)[-1]
 
 
 def get_created_by(chebi_id):
     '''Returns created by'''
-    if len(__CREATED_BYS) == 0:
+    if not __CREATED_BYS:
         __parse_compounds()
 
     return __CREATED_BYS[chebi_id] if chebi_id in __MODIFIED_ONS else None
 
 
 def get_star(chebi_id):
-    '''Returns created by'''
-    if len(__STARS) == 0:
+    '''Returns star'''
+    if not __STARS:
         __parse_compounds()
 
     return __STARS[chebi_id] if chebi_id in __STARS else float('NaN')
@@ -330,7 +330,7 @@ def __put_all_ids(parent_id, child_id):
 
 def get_database_accessions(chebi_id):
     '''Returns database accession'''
-    if len(__DATABASE_ACCESSIONS) == 0:
+    if not __DATABASE_ACCESSIONS:
         __parse_database_accessions()
 
     return __DATABASE_ACCESSIONS[chebi_id] if chebi_id in \
@@ -366,7 +366,7 @@ def __parse_database_accessions():
 
 def get_inchi(chebi_id):
     '''Returns InChI string'''
-    if len(__INCHIS) == 0:
+    if not __INCHIS:
         __parse_inchi()
 
     return __INCHIS[chebi_id] if chebi_id in __INCHIS else None
@@ -386,7 +386,7 @@ def __parse_inchi():
 
 def get_names(chebi_id):
     '''Returns names'''
-    if len(__ALL_NAMES) == 0:
+    if not __ALL_NAMES:
         __parse_names()
 
     return __ALL_NAMES[chebi_id] if chebi_id in __ALL_NAMES else []
@@ -449,7 +449,7 @@ def get_references(chebi_ids):
 
 def get_outgoings(chebi_id):
     '''Returns outgoings'''
-    if len(__OUTGOINGS) == 0:
+    if not __OUTGOINGS:
         __parse_relation()
 
     return __OUTGOINGS[chebi_id] if chebi_id in __OUTGOINGS else []
@@ -463,7 +463,7 @@ def get_all_outgoings(chebi_ids):
 
 def get_incomings(chebi_id):
     '''Returns incomings'''
-    if len(__INCOMINGS) == 0:
+    if not __INCOMINGS:
         __parse_relation()
 
     return __INCOMINGS[chebi_id] if chebi_id in __INCOMINGS else []
@@ -515,7 +515,7 @@ def __parse_relation():
 
 def get_inchi_key(chebi_id):
     '''Returns InChI key'''
-    if len(__INCHI_KEYS) == 0:
+    if not __INCHI_KEYS:
         __parse_structures()
 
     return __INCHI_KEYS[chebi_id] if chebi_id in __INCHI_KEYS else None
@@ -523,7 +523,7 @@ def get_inchi_key(chebi_id):
 
 def get_smiles(chebi_id):
     '''Returns InChI key'''
-    if len(__SMILES) == 0:
+    if not __SMILES:
         __parse_structures()
 
     return __SMILES[chebi_id] if chebi_id in __SMILES else None
@@ -560,9 +560,9 @@ def get_mol(chebi_id):
                         return Structure(''.join(this_structure),
                                          Structure.mol,
                                          int(tokens[2][0]))
-                    else:
-                        # In Molfile:
-                        this_structure.append(line)
+                    # else:
+                    # In Molfile:
+                    this_structure.append(line)
 
     return None
 
@@ -609,7 +609,7 @@ def __parse_structures():
 
 def __get_default_structure_ids():
     '''COMMENT'''
-    if len(__DEFAULT_STRUCTURE_IDS) == 0:
+    if not __DEFAULT_STRUCTURE_IDS:
         filename = get_file('default_structures.tsv')
 
         with io.open(filename, 'r', encoding='cp1252') as textfile:
@@ -682,10 +682,10 @@ def __get_last_update_time():
 
     if first_tuesday < now:
         return first_tuesday
-    else:
-        first_of_month = datetime.datetime(now.year, now.month, 1)
-        last_month = first_of_month + datetime.timedelta(days=-1)
-        return __get_first_tuesday(last_month)
+    # else:
+    first_of_month = datetime.datetime(now.year, now.month, 1)
+    last_month = first_of_month + datetime.timedelta(days=-1)
+    return __get_first_tuesday(last_month)
 
 
 def __get_first_tuesday(this_date):
