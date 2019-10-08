@@ -276,7 +276,7 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_cmp_orig_existing(self):
         '''COMMENT'''
-        this_compound_origin = CompoundOrigin('Homo sapiens', 'NCBI:9606',
+        this_compound_origin = CompoundOrigin('Homo sapiens', 'NCBI:txid9606',
                                               None, None, None, None,
                                               'DOI', '10.1038/nbt.2488', None)
         self.assertTrue(this_compound_origin
@@ -284,7 +284,7 @@ class TestChebiEntity(unittest.TestCase):
 
     def test_get_cmp_orig_secondary(self):
         '''COMMENT'''
-        this_compound_origin = CompoundOrigin('Homo sapiens', 'NCBI:9606',
+        this_compound_origin = CompoundOrigin('Homo sapiens', 'NCBI:txid9606',
                                               None, None, None, None,
                                               'DOI', '10.1038/nbt.2488', None)
         self.assertTrue(this_compound_origin
