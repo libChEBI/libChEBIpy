@@ -521,7 +521,7 @@ def get_smiles(chebi_id):
 def get_mol(chebi_id):
     '''Returns mol'''
     chebi_id_regexp = '^\\d+\\,' + str(chebi_id) + '\\,.*'
-    mol_file_end_regexp = '\",mol,\\dD'
+    mol_file_end_regexp = '\",mol,\\dD,[Y\\|N],[Y\\|N]$'
     this_structure = []
 
     filename = get_file('structures.csv.gz')
@@ -533,9 +533,7 @@ def get_mol(chebi_id):
 
         for line in textfile:
             if in_chebi_id or line[0].isdigit():
-                if re.match(chebi_id_regexp, line) \
-                    and int(line.split(',')[0]) \
-                        in __get_default_structure_ids():
+                if re.match(chebi_id_regexp, line):
                     tokens = line.strip().split(',')
                     in_chebi_id = True
                     this_structure = []
@@ -543,14 +541,22 @@ def get_mol(chebi_id):
                                           .replace('\"', ''))
                     this_structure.append('\n')
                 elif in_chebi_id:
+
                     if re.match(mol_file_end_regexp, line):
                         tokens = line.strip().split(',')
-                        this_structure.append(tokens[0].replace('\"', ''))
-                        return Structure(''.join(this_structure),
-                                         Structure.mol,
-                                         int(tokens[2][0]))
-                    # else:
-                    # In Molfile:
+
+                        if _is_default_structure(tokens[3]):
+                            tokens = line.strip().split(',')
+                            this_structure.append(tokens[0].replace('\"', ''))
+                            return Structure(''.join(this_structure),
+                                             Structure.mol,
+                                             int(tokens[2][0]))
+
+                        # else:
+                        this_structure = []
+                        in_chebi_id = False
+                        continue
+
                     this_structure.append(line)
 
     return None
@@ -583,7 +589,7 @@ def __parse_structures():
         for line in textfile:
             tokens = line.strip().split(',')
 
-            if len(tokens) == 5:
+            if len(tokens) == 7:
                 if tokens[3] == 'InChIKey':
                     __INCHI_KEYS[int(tokens[1])] = \
                         Structure(tokens[2],
@@ -594,21 +600,6 @@ def __parse_structures():
                         Structure(tokens[2],
                                   Structure.SMILES,
                                   int(tokens[4][0]))
-
-
-def __get_default_structure_ids():
-    '''COMMENT'''
-    if not __DEFAULT_STRUCTURE_IDS:
-        filename = get_file('default_structures.tsv')
-
-        with io.open(filename, 'r', encoding='cp1252') as textfile:
-            next(textfile)
-
-            for line in textfile:
-                tokens = line.strip().split('\t')
-                __DEFAULT_STRUCTURE_IDS.append(int(tokens[1]))
-
-    return __DEFAULT_STRUCTURE_IDS
 
 
 def get_file(filename):
@@ -684,3 +675,8 @@ def __get_first_tuesday(this_date):
     first_tuesday_day = (calendar.TUESDAY - month_range[0]) % 7
     first_tuesday = first_of_month + datetime.timedelta(days=first_tuesday_day)
     return first_tuesday
+
+
+def _is_default_structure(def_struct):
+    '''Is default structure?'''
+    return def_struct.upper() == 'Y'
