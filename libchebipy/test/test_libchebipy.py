@@ -34,13 +34,13 @@ class Test(unittest.TestCase):
         self.assertIn(ChebiEntity('CHEBI:15365'), results)
 
     def test_search_hexenal_exact(self):
-        '''Test search method for aspirin.'''
+        '''Test search method for (E)-2-Hexenal.'''
         results = libchebipy.search('(E)-2-Hexenal', True)
         self.assertTrue(ChebiEntity('CHEBI:28913'),
                         results[0] if results else None)
 
     def test_search_hexenal_inexact(self):
-        '''Test search method for aspirin.'''
+        '''Test search method for (E)-2-Hexenal.'''
         results = libchebipy.search('(E)-2-Hexenal', False)
         self.assertIn(ChebiEntity('CHEBI:28913'), results)
 

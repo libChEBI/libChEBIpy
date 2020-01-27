@@ -43,6 +43,8 @@ __all__ = [
 
 def search(term, exact=False, rows=1e6):
     '''Searches ChEBI via ols.'''
+    term = term if exact else '"' + term + '"'
+
     url = 'https://www.ebi.ac.uk/ols/api/search?ontology=chebi' + \
         '&exact=' + str(exact) + '&q=' + term + \
         '&rows=' + str(int(rows))
