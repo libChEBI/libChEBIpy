@@ -52,7 +52,9 @@ __SOURCES = {}
 __STARS = {}
 __STATUSES = {}
 
-__DOWNLOAD_PARAMS = {'path': os.path.join(os.path.expanduser('~'), 'libChEBI'),
+_download_dir = os.environ.get('LIBCHEBIPY_DOWNLOAD_DIR', os.path.join(os.path.expanduser('~'), 'libChEBI'))
+
+__DOWNLOAD_PARAMS = {'path': _download_dir),
                      'auto_update': True}
 
 
