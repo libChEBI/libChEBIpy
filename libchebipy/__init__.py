@@ -1,5 +1,5 @@
 '''
-libChEBIpy (c) University of Manchester 2015
+libChEBIpy (c) University of Manchester 2015-2020
 
 libChEBIpy is licensed under the MIT License.
 

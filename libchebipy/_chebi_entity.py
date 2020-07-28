@@ -31,7 +31,7 @@ class ChebiEntity(BaseObject):
         if self.get_name() is None:
             raise ChebiException('ChEBI id ' + chebi_id + ' invalid')
 
-    def _set_parser(self, parser_name, download_dir, auto_update):
+    def _get_parser(self, parser_name, download_dir, auto_update):
         parser_name = parser_name.lower().replace('-', '')
         if parser_name not in ["filesystem", "googlestorage"]:
             raise ChebiException('Parser %s is not valid.' % parser_name)

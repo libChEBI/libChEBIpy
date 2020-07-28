@@ -12,12 +12,17 @@ import datetime
 import math
 import os
 import unittest
+import tempfile
 
 from libchebipy import ChebiEntity, ChebiException, Comment, CompoundOrigin, \
     DatabaseAccession, Formula, Name, Reference, Relation, Structure
 import libchebipy
-import libchebipy._parsers as parsers
 
+# Test the filesystem parser
+from libchebipy._parsers.filesystem import FileSystemCache
+download_dir = tempfile.mkdtemp()
+parser = FileSystemCache(download_dir=download_dir)
+print(download_dir)
 
 class Test(unittest.TestCase):
     '''Test class for libchebipy module.'''
@@ -328,37 +333,37 @@ class TestChemicalDataParser(unittest.TestCase):
 
     def test_get_formulae_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_formulae(6504)) > 1)
+        self.assertTrue(len(parser.get_formulae(6504)) > 1)
 
     def test_get_formulae_size_neg(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_formulae(-1)) == 0)
+        self.assertTrue(len(parser.get_formulae(-1)) == 0)
 
     def test_get_formulae(self):
         '''COMMENT'''
         self.assertTrue(Formula('C8H11NO3', 'KEGG COMPOUND')
-                        in parsers.get_formulae(18357))
+                        in parser.get_formulae(18357))
 
     def test_get_formulae_neg(self):
         '''COMMENT'''
         self.assertFalse(('C8H11NO3', 'KEGG COMPOUND')
-                         in parsers.get_formulae(-1))
+                         in parser.get_formulae(-1))
 
     def test_get_mass(self):
         '''COMMENT'''
-        self.assertEqual(338.20790, parsers.get_mass(77120))
+        self.assertEqual(338.20790, parser.get_mass(77120))
 
     def test_get_mass_neg(self):
         '''COMMENT'''
-        self.assertTrue(math.isnan(parsers.get_mass(-1)))
+        self.assertTrue(math.isnan(parser.get_mass(-1)))
 
     def test_get_charge(self):
         '''COMMENT'''
-        self.assertEqual(-4, parsers.get_charge(77099))
+        self.assertEqual(-4, parser.get_charge(77099))
 
     def test_get_charge_neg(self):
         '''COMMENT'''
-        self.assertTrue(math.isnan(parsers.get_charge(-1)))
+        self.assertTrue(math.isnan(parser.get_charge(-1)))
 
 
 class TestCommentsParser(unittest.TestCase):
@@ -366,15 +371,15 @@ class TestCommentsParser(unittest.TestCase):
 
     def test_get_comments_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_comments(5407)) > 3)
+        self.assertTrue(len(parser.get_comments(5407)) > 3)
 
     def test_get_comments_size_empty(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_comments(7)) == 0)
+        self.assertTrue(len(parser.get_comments(7)) == 0)
 
     def test_get_comments_size_neg(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_comments(-1)) == 0)
+        self.assertTrue(len(parser.get_comments(-1)) == 0)
 
     def test_get_comments(self):
         '''COMMENT'''
@@ -383,11 +388,11 @@ class TestCommentsParser(unittest.TestCase):
                        'DatabaseAccession',
                        'Z stereomer',
                        datetime.datetime.strptime('2006-09-01', '%Y-%M-%d')),
-                      parsers.get_comments(5407))
+                      parser.get_comments(5407))
 
     def test_get_comments_neg(self):
         '''COMMENT'''
-        self.assertEqual(parsers.get_comments(-1), [])
+        self.assertEqual(parser.get_comments(-1), [])
 
 
 class TestCompoundOriginsParser(unittest.TestCase):
@@ -395,15 +400,15 @@ class TestCompoundOriginsParser(unittest.TestCase):
 
     def test_get_comp_orig_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_compound_origins(16415)) > 4)
+        self.assertTrue(len(parser.get_compound_origins(16415)) > 4)
 
     def test_get_comp_orig_size_empty(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_compound_origins(1641)))
+        self.assertEqual(0, len(parser.get_compound_origins(1641)))
 
     def test_get_comp_orig_size_neg(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_compound_origins(-1)))
+        self.assertEqual(0, len(parser.get_compound_origins(-1)))
 
     def test_get_cmp_orig(self):
         '''COMMENT'''
@@ -417,7 +422,7 @@ class TestCompoundOriginsParser(unittest.TestCase):
                                    '21425845',
                                    'Lyophilized mycelia extracted with '
                                    'mixture of methanol and chloroform')
-        self.assertIn(comp_orig, parsers.get_compound_origins(67813))
+        self.assertIn(comp_orig, parser.get_compound_origins(67813))
 
 
 class TestCompoundsParser(unittest.TestCase):
@@ -425,87 +430,87 @@ class TestCompoundsParser(unittest.TestCase):
 
     def test_get_status(self):
         '''COMMENT'''
-        self.assertEqual('C', parsers.get_status(584977))
+        self.assertEqual('C', parser.get_status(584977))
 
     def test_get_status_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_status(-1))
+        self.assertIsNone(parser.get_status(-1))
 
     def test_get_source(self):
         '''COMMENT'''
-        self.assertEqual('ChEMBL', parsers.get_source(718203))
+        self.assertEqual('ChEMBL', parser.get_source(718203))
 
     def test_get_source_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_source(-1))
+        self.assertIsNone(parser.get_source(-1))
 
     def test_get_parent_id(self):
         '''COMMENT'''
-        self.assertEqual(34107, parsers.get_parent_id(76262))
+        self.assertEqual(34107, parser.get_parent_id(76262))
 
     def test_get_parent_id_neg(self):
         '''COMMENT'''
-        self.assertTrue(math.isnan(parsers.get_parent_id(-1)))
+        self.assertTrue(math.isnan(parser.get_parent_id(-1)))
 
     def test_get_parent_id_undefined(self):
         '''COMMENT'''
-        self.assertTrue(math.isnan(parsers.get_parent_id(41100)))
+        self.assertTrue(math.isnan(parser.get_parent_id(41100)))
 
     def test_get_name(self):
         '''COMMENT'''
         name = '3,7-DIHYDROXY-2-NAPHTHOIC ACID'
-        self.assertEqual(name, parsers.get_name(41106))
+        self.assertEqual(name, parser.get_name(41106))
 
     def test_get_name_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_name(-1))
+        self.assertIsNone(parser.get_name(-1))
 
     def test_get_name_null(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_name(7483))
+        self.assertIsNone(parser.get_name(7483))
 
     def test_get_definition(self):
         '''COMMENT'''
         definition = 'A glycerophosphocholine having an unspecified acyl ' + \
             'group attached at the 2-position.'
-        self.assertEqual(definition, parsers.get_definition(11502))
+        self.assertEqual(definition, parser.get_definition(11502))
 
     def test_get_definition_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_definition(-1))
+        self.assertIsNone(parser.get_definition(-1))
 
     def test_get_definition_null(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_definition(18945))
+        self.assertIsNone(parser.get_definition(18945))
 
     def test_get_modified_on(self):
         '''COMMENT'''
-        self.assertTrue(parsers.get_modified_on(57857) >
+        self.assertTrue(parser.get_modified_on(57857) >
                         datetime.datetime.strptime('2014-01-01', '%Y-%M-%d'))
 
     def test_get_modified_on_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_modified_on(-1))
+        self.assertIsNone(parser.get_modified_on(-1))
 
     def test_get_modified_on_null(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_modified_on(6981))
+        self.assertIsNone(parser.get_modified_on(6981))
 
     def test_get_created_by(self):
         '''COMMENT'''
-        self.assertEqual('CHEBI', parsers.get_created_by(6030))
+        self.assertEqual('CHEBI', parser.get_created_by(6030))
 
     def test_get_created_by_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_created_by(-1))
+        self.assertIsNone(parser.get_created_by(-1))
 
     def test_get_star(self):
         '''COMMENT'''
-        self.assertEqual(3, parsers.get_star(8082))
+        self.assertEqual(3, parser.get_star(8082))
 
     def test_get_star_neg(self):
         '''COMMENT'''
-        self.assertTrue(math.isnan(parsers.get_star(-1)))
+        self.assertTrue(math.isnan(parser.get_star(-1)))
 
 
 class TestDatabaseAccessionParser(unittest.TestCase):
@@ -513,35 +518,35 @@ class TestDatabaseAccessionParser(unittest.TestCase):
 
     def test_get_dat_acc_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_database_accessions(7)) > 5)
+        self.assertTrue(len(parser.get_database_accessions(7)) > 5)
 
     def test_get_dat_acc_size_neg(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_database_accessions(-1)))
+        self.assertEqual(0, len(parser.get_database_accessions(-1)))
 
     def test_get_dat_acc_size_empty(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_database_accessions(60260)))
+        self.assertEqual(0, len(parser.get_database_accessions(60260)))
 
     def test_get_dat_acc(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('PubMed citation', '214717', 'SUBMITTER')
-        self.assertIn(dat_acc, parsers.get_database_accessions(60261))
+        self.assertIn(dat_acc, parser.get_database_accessions(60261))
 
     def test_get_dat_acc_neg_type(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('ChEBI', '214717', 'SUBMITTER')
-        self.assertNotIn(dat_acc, parsers.get_database_accessions(60261))
+        self.assertNotIn(dat_acc, parser.get_database_accessions(60261))
 
     def test_get_dat_acc_neg_acc_no(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('PubMed citation', '123456', 'SUBMITTER')
-        self.assertNotIn(dat_acc, parsers.get_database_accessions(60261))
+        self.assertNotIn(dat_acc, parser.get_database_accessions(60261))
 
     def test_get_dat_acc_neg_source(self):
         '''COMMENT'''
         dat_acc = DatabaseAccession('PubMed citation', '214717', 'PubChem')
-        self.assertNotIn(dat_acc, parsers.get_database_accessions(60261))
+        self.assertNotIn(dat_acc, parser.get_database_accessions(60261))
 
 
 class TestDownloader(unittest.TestCase):
@@ -549,7 +554,7 @@ class TestDownloader(unittest.TestCase):
 
     def test_get_file(self):
         '''COMMENT'''
-        self.assertIsNotNone(parsers.get_file('chebiId_inchi.tsv'))
+        self.assertIsNotNone(parser.get_file('chebiId_inchi.tsv'))
 
 
 class TestInchiParser(unittest.TestCase):
@@ -558,11 +563,11 @@ class TestInchiParser(unittest.TestCase):
     def test_get_inchi(self):
         '''COMMENT'''
         inchi = 'InChI=1S/H2O/h1H2'
-        self.assertEqual(parsers.get_inchi(15377), inchi)
+        self.assertEqual(parser.get_inchi(15377), inchi)
 
     def test_get_inchi_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_inchi(-1))
+        self.assertIsNone(parser.get_inchi(-1))
 
 
 class TestNamesParser(unittest.TestCase):
@@ -570,21 +575,21 @@ class TestNamesParser(unittest.TestCase):
 
     def test_get_names_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_names(15393)) <= 12)
+        self.assertTrue(len(parser.get_names(15393)) <= 12)
 
     def test_get_names_size_neg(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_names(-1)))
+        self.assertEqual(0, len(parser.get_names(-1)))
 
     def test_get_names_size_empty(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_names(81100)))
+        self.assertEqual(0, len(parser.get_names(81100)))
 
     def test_get_names(self):
         '''COMMENT'''
         nme = Name('2-(p-Chloro-o-tolyloxy)propionic acid',
                    'SYNONYM', 'ChemIDplus', False, 'en')
-        self.assertIn(nme, parsers.get_names(75711))
+        self.assertIn(nme, parser.get_names(75711))
 
 
 class TestReferenceParser(unittest.TestCase):
@@ -592,26 +597,26 @@ class TestReferenceParser(unittest.TestCase):
 
     def test_get_references_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_references([76181])) > 100)
+        self.assertTrue(len(parser.get_references([76181])) > 100)
 
     def test_get_references_size_neg(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_references([-1])))
+        self.assertEqual(0, len(parser.get_references([-1])))
 
     def test_get_references_size_empty(self):
         '''COMMENT'''
-        self.assertEqual(0, len(parsers.get_references([1])))
+        self.assertEqual(0, len(parser.get_references([1])))
 
     def test_get_references(self):
         '''COMMENT'''
         ref = Reference('O13340', 'UniProt', 'CC - INDUCTION',
                         'Podosporapepsin')
-        self.assertIn(ref, parsers.get_references([27594]))
+        self.assertIn(ref, parser.get_references([27594]))
 
     def test_get_refs_three_tokens(self):
         '''COMMENT'''
         ref = Reference('SID: 49658669', 'PubChem')
-        self.assertIn(ref, parsers.get_references([8]))
+        self.assertIn(ref, parser.get_references([8]))
 
     def test_get_refs_reported_problem(self):
         '''Test reported problem:
@@ -624,37 +629,37 @@ class TestRelationParser(unittest.TestCase):
 
     def test_get_outgoings_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_outgoings(4167)) > 2)
+        self.assertTrue(len(parser.get_outgoings(4167)) > 2)
 
     def test_get_incomings_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_incomings(4167)) > 19)
+        self.assertTrue(len(parser.get_incomings(4167)) > 19)
 
     def test_get_outgoings_neg_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_outgoings(-1)) == 0)
+        self.assertTrue(len(parser.get_outgoings(-1)) == 0)
 
     def test_get_incomings_neg_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_incomings(-1)) == 0)
+        self.assertTrue(len(parser.get_incomings(-1)) == 0)
 
     def test_get_outgoings_empty_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_outgoings(1)) == 0)
+        self.assertTrue(len(parser.get_outgoings(1)) == 0)
 
     def test_get_incomings_empty_size(self):
         '''COMMENT'''
-        self.assertTrue(len(parsers.get_incomings(1)) == 0)
+        self.assertTrue(len(parser.get_incomings(1)) == 0)
 
     def test_get_outgoings(self):
         '''COMMENT'''
         rel = Relation('is_a', 'CHEBI:17634', 'C')
-        self.assertIn(rel, parsers.get_outgoings(4167))
+        self.assertIn(rel, parser.get_outgoings(4167))
 
     def test_get_incomings(self):
         '''COMMENT'''
         rel = Relation('has_functional_parent', '15866', 'C')
-        self.assertIn(rel, parsers.get_incomings(4167))
+        self.assertIn(rel, parser.get_incomings(4167))
 
 
 class TestStructuresParser(unittest.TestCase):
@@ -662,11 +667,11 @@ class TestStructuresParser(unittest.TestCase):
 
     def test_get_inchi_key_missing(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_inchi_key(1))
+        self.assertIsNone(parser.get_inchi_key(1))
 
     def test_get_inchi_key_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_inchi_key(-1))
+        self.assertIsNone(parser.get_inchi_key(-1))
 
     def test_get_inchi_key(self):
         '''COMMENT'''
@@ -674,7 +679,7 @@ class TestStructuresParser(unittest.TestCase):
             'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
             Structure.InChIKey, 1)
         self.assertEqual(this_structure,
-                         parsers.get_inchi_key(73938))
+                         parser.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_struct(self):
         '''COMMENT'''
@@ -682,14 +687,14 @@ class TestStructuresParser(unittest.TestCase):
             'made_up',
             Structure.InChIKey, 1)
         self.assertNotEqual(this_structure,
-                            parsers.get_inchi_key(73938))
+                            parser.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_type(self):
         '''COMMENT'''
         this_structure = Structure(
             'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
             Structure.mol, 1)
-        self.assertNotEqual(this_structure, parsers.get_inchi_key(73938))
+        self.assertNotEqual(this_structure, parser.get_inchi_key(73938))
 
     def test_get_inchi_key_neg_dim(self):
         '''COMMENT'''
@@ -697,30 +702,30 @@ class TestStructuresParser(unittest.TestCase):
             'VIDUVSPOWYVZIC-IMJSIDKUSA-O',
             Structure.InChIKey, 123456)
         self.assertNotEqual(this_structure,
-                            parsers.get_inchi_key(73938))
+                            parser.get_inchi_key(73938))
 
     def test_get_smiles_missing(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_smiles(1))
+        self.assertIsNone(parser.get_smiles(1))
 
     def test_get_smiles_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_smiles(-1))
+        self.assertIsNone(parser.get_smiles(-1))
 
     def test_get_smiles(self):
         '''COMMENT'''
         this_structure = Structure(
             'NC(=[NH2+])NCC[C@H](O)[C@H]([NH3+])C([O-])=O',
             Structure.SMILES, 1)
-        self.assertEqual(this_structure, parsers.get_smiles(73938))
+        self.assertEqual(this_structure, parser.get_smiles(73938))
 
     def test_get_mol_missing(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_mol(1))
+        self.assertIsNone(parser.get_mol(1))
 
     def test_get_mol_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_mol(-1))
+        self.assertIsNone(parser.get_mol(-1))
 
     def test_get_mol(self):
         '''COMMENT'''
@@ -732,11 +737,11 @@ class TestStructuresParser(unittest.TestCase):
 
     def test_get_mol_file_missing(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_mol_filename(1))
+        self.assertIsNone(parser.get_mol_filename(1))
 
     def test_get_mol_file_neg(self):
         '''COMMENT'''
-        self.assertIsNone(parsers.get_mol_filename(-1))
+        self.assertIsNone(parser.get_mol_filename(-1))
 
     def test_get_mol_file(self):
         '''COMMENT'''
@@ -744,7 +749,7 @@ class TestStructuresParser(unittest.TestCase):
         textfile_read = open(directory + '/ChEBI_73938.mol', 'r')
         mol_read = textfile_read.read()
 
-        with open(parsers.get_mol_filename(73938), 'r') as txtfile:
+        with open(parser.get_mol_filename(73938), 'r') as txtfile:
             mol_retrieved = txtfile.read()
             textfile_read.close()
 
@@ -757,7 +762,7 @@ class TestStructuresParser(unittest.TestCase):
                              '.mol', 'r')
         mol_read = textfile_read.read()
         this_structure = Structure(mol_read, Structure.mol, 2)
-        self.assertEqual(this_structure, parsers.get_mol(chebi_id))
+        self.assertEqual(this_structure, parser.get_mol(chebi_id))
 
 
 def _read_mol_file(chebi_id):
