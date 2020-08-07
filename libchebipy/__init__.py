@@ -1,5 +1,5 @@
 '''
-libChEBIpy (c) University of Manchester 2015
+libChEBIpy (c) University of Manchester 2015-2020
 
 libChEBIpy is licensed under the MIT License.
 
@@ -18,7 +18,6 @@ from ._compound_origin import CompoundOrigin
 from ._database_accession import DatabaseAccession
 from ._formula import Formula
 from ._name import Name
-from ._parsers import set_auto_update, set_download_cache_path
 from ._reference import Reference
 from ._relation import Relation
 from ._structure import Structure
@@ -36,8 +35,6 @@ __all__ = [
     "Relation",
     "Structure",
     "search",
-    "set_auto_update",
-    "set_download_cache_path",
 ]
 
 

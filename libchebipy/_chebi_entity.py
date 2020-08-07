@@ -1,5 +1,5 @@
 '''
-libChEBIpy (c) University of Manchester 2015
+libChEBIpy (c) University of Manchester 2015-2020
 
 libChEBIpy is licensed under the MIT License.
 
@@ -10,8 +10,8 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 # pylint: disable=superfluous-parens
 # pylint: disable=too-many-public-methods
 import math
+import sys
 
-from . import _parsers as parsers
 from ._base_object import BaseObject
 
 
@@ -23,12 +23,28 @@ class ChebiException(Exception):
 class ChebiEntity(BaseObject):
     '''Class representing a single entity in the ChEBI database.'''
 
-    def __init__(self, chebi_id):
+    def __init__(self, chebi_id, parser="filesystem", auto_update=True, download_dir=None):
         self.__chebi_id = int(chebi_id.replace('CHEBI:', ''))
         self.__all_ids = None
+        self._get_parser(parser, download_dir, auto_update)
 
         if self.get_name() is None:
             raise ChebiException('ChEBI id ' + chebi_id + ' invalid')
+
+    def _get_parser(self, parser_name, download_dir, auto_update):
+        parser_name = parser_name.lower().replace('-', '')
+        if parser_name not in ["filesystem", "googlestorage"]:
+            raise ChebiException('Parser %s is not valid.' % parser_name)
+        
+        # Save to filesystem cache
+        if parser_name == "filesystem":
+            from ._parsers.filesystem import FileSystemCache
+            self.parser = FileSystemCache(download_dir=download_dir, auto_update=auto_update)
+
+        # Save to Google storage cache
+        elif parser_name == "googlestorage":
+            from ._parsers.googlestorage import GoogleStorageCache
+            self.parser = GoogleStorageCache(download_dir=download_dir, auto_update=auto_update)
 
     def get_id(self):
         '''Returns id'''
@@ -36,12 +52,12 @@ class ChebiEntity(BaseObject):
 
     def get_parent_id(self):
         '''Returns parent id'''
-        parent_id = parsers.get_parent_id(self.__chebi_id)
+        parent_id = self.parser.get_parent_id(self.__chebi_id)
         return None if math.isnan(parent_id) else 'CHEBI:' + str(parent_id)
 
     def get_formulae(self):
         '''Returns formulae'''
-        return parsers.get_all_formulae(self.__get_all_ids())
+        return self.parser.get_all_formulae(self.__get_all_ids())
 
     def get_formula(self):
         '''Returns formula'''
@@ -50,14 +66,14 @@ class ChebiEntity(BaseObject):
 
     def get_mass(self):
         '''Returns mass'''
-        mass = parsers.get_mass(self.__chebi_id)
+        mass = self.parser.get_mass(self.__chebi_id)
 
         if math.isnan(mass):
-            mass = parsers.get_mass(self.get_parent_id())
+            mass = self.parser.get_mass(self.get_parent_id())
 
         if math.isnan(mass):
             for parent_or_child_id in self.__get_all_ids():
-                mass = parsers.get_mass(parent_or_child_id)
+                mass = self.parser.get_mass(parent_or_child_id)
 
                 if not math.isnan(mass):
                     break
@@ -66,14 +82,14 @@ class ChebiEntity(BaseObject):
 
     def get_charge(self):
         '''Returns charge'''
-        charge = parsers.get_charge(self.__chebi_id)
+        charge = self.parser.get_charge(self.__chebi_id)
 
         if math.isnan(charge):
-            charge = parsers.get_charge(self.get_parent_id())
+            charge = self.parser.get_charge(self.get_parent_id())
 
         if math.isnan(charge):
             for parent_or_child_id in self.__get_all_ids():
-                charge = parsers.get_charge(parent_or_child_id)
+                charge = self.parser.get_charge(parent_or_child_id)
 
                 if not math.isnan(charge):
                     break
@@ -82,22 +98,22 @@ class ChebiEntity(BaseObject):
 
     def get_comments(self):
         '''Returns comments'''
-        return parsers.get_all_comments(self.__get_all_ids())
+        return self.parser.get_all_comments(self.__get_all_ids())
 
     def get_source(self):
         '''Returns source'''
-        return parsers.get_source(self.__chebi_id)
+        return self.parser.get_source(self.__chebi_id)
 
     def get_name(self):
         '''Returns name'''
-        name = parsers.get_name(self.__chebi_id)
+        name = self.parser.get_name(self.__chebi_id)
 
         if name is None:
-            name = parsers.get_name(self.get_parent_id())
+            name = self.parser.get_name(self.get_parent_id())
 
         if name is None:
             for parent_or_child_id in self.__get_all_ids():
-                name = parsers.get_name(parent_or_child_id)
+                name = self.parser.get_name(parent_or_child_id)
 
                 if name is not None:
                     break
@@ -106,14 +122,14 @@ class ChebiEntity(BaseObject):
 
     def get_definition(self):
         '''Returns definition'''
-        definition = parsers.get_definition(self.__chebi_id)
+        definition = self.parser.get_definition(self.__chebi_id)
 
         if definition is None:
-            definition = parsers.get_definition(self.get_parent_id())
+            definition = self.parser.get_definition(self.get_parent_id())
 
         if definition is None:
             for parent_or_child_id in self.__get_all_ids():
-                definition = parsers.get_definition(parent_or_child_id)
+                definition = self.parser.get_definition(parent_or_child_id)
 
                 if definition is not None:
                     break
@@ -122,18 +138,18 @@ class ChebiEntity(BaseObject):
 
     def get_modified_on(self):
         '''Returns modified on'''
-        return parsers.get_all_modified_on(self.__get_all_ids())
+        return self.parser.get_all_modified_on(self.__get_all_ids())
 
     def get_created_by(self):
         '''Returns created by'''
-        created_by = parsers.get_created_by(self.__chebi_id)
+        created_by = self.parser.get_created_by(self.__chebi_id)
 
         if created_by is None:
-            created_by = parsers.get_created_by(self.get_parent_id())
+            created_by = self.parser.get_created_by(self.get_parent_id())
 
         if created_by is None:
             for parent_or_child_id in self.__get_all_ids():
-                created_by = parsers.get_created_by(parent_or_child_id)
+                created_by = self.parser.get_created_by(parent_or_child_id)
 
                 if created_by is not None:
                     break
@@ -142,22 +158,22 @@ class ChebiEntity(BaseObject):
 
     def get_star(self):
         '''Returns star'''
-        return parsers.get_star(self.__chebi_id)
+        return self.parser.get_star(self.__chebi_id)
 
     def get_database_accessions(self):
         '''Returns database accessions'''
-        return parsers.get_all_database_accessions(self.__get_all_ids())
+        return self.parser.get_all_database_accessions(self.__get_all_ids())
 
     def get_inchi(self):
         '''Returns inchi'''
-        inchi = parsers.get_inchi(self.__chebi_id)
+        inchi = self.parser.get_inchi(self.__chebi_id)
 
         if inchi is None:
-            inchi = parsers.get_inchi(self.get_parent_id())
+            inchi = self.parser.get_inchi(self.get_parent_id())
 
         if inchi is None:
             for parent_or_child_id in self.__get_all_ids():
-                inchi = parsers.get_inchi(parent_or_child_id)
+                inchi = self.parser.get_inchi(parent_or_child_id)
 
                 if inchi is not None:
                     break
@@ -166,14 +182,14 @@ class ChebiEntity(BaseObject):
 
     def get_inchi_key(self):
         '''Returns inchi key'''
-        structure = parsers.get_inchi_key(self.__chebi_id)
+        structure = self.parser.get_inchi_key(self.__chebi_id)
 
         if structure is None:
-            structure = parsers.get_inchi_key(self.get_parent_id())
+            structure = self.parser.get_inchi_key(self.get_parent_id())
 
         if structure is None:
             for parent_or_child_id in self.__get_all_ids():
-                structure = parsers.get_inchi_key(parent_or_child_id)
+                structure = self.parser.get_inchi_key(parent_or_child_id)
 
                 if structure is not None:
                     break
@@ -182,14 +198,14 @@ class ChebiEntity(BaseObject):
 
     def get_smiles(self):
         '''Returns smiles'''
-        structure = parsers.get_smiles(self.__chebi_id)
+        structure = self.parser.get_smiles(self.__chebi_id)
 
         if structure is None:
-            structure = parsers.get_smiles(self.get_parent_id())
+            structure = self.parser.get_smiles(self.get_parent_id())
 
         if structure is None:
             for parent_or_child_id in self.__get_all_ids():
-                structure = parsers.get_smiles(parent_or_child_id)
+                structure = self.parser.get_smiles(parent_or_child_id)
 
                 if structure is not None:
                     break
@@ -198,14 +214,14 @@ class ChebiEntity(BaseObject):
 
     def get_mol(self):
         '''Returns mol'''
-        structure = parsers.get_mol(self.__chebi_id)
+        structure = self.parser.get_mol(self.__chebi_id)
 
         if structure is None:
-            structure = parsers.get_mol(self.get_parent_id())
+            structure = self.parser.get_mol(self.get_parent_id())
 
         if structure is None:
             for parent_or_child_id in self.__get_all_ids():
-                structure = parsers.get_mol(parent_or_child_id)
+                structure = self.parser.get_mol(parent_or_child_id)
 
                 if structure is not None:
                     break
@@ -214,15 +230,15 @@ class ChebiEntity(BaseObject):
 
     def get_mol_filename(self):
         '''Returns mol filename'''
-        mol_filename = parsers.get_mol_filename(self.__chebi_id)
+        mol_filename = self.parser.get_mol_filename(self.__chebi_id)
 
         if mol_filename is None:
-            mol_filename = parsers.get_mol_filename(self.get_parent_id())
+            mol_filename = self.parser.get_mol_filename(self.get_parent_id())
 
         if mol_filename is None:
             for parent_or_child_id in self.__get_all_ids():
                 mol_filename = \
-                    parsers.get_mol_filename(parent_or_child_id)
+                    self.parser.get_mol_filename(parent_or_child_id)
 
                 if mol_filename is not None:
                     break
@@ -231,33 +247,33 @@ class ChebiEntity(BaseObject):
 
     def get_names(self):
         '''Returns names'''
-        return parsers.get_all_names(self.__get_all_ids())
+        return self.parser.get_all_names(self.__get_all_ids())
 
     def get_references(self):
         '''Returns references'''
-        return parsers.get_references(self.__get_all_ids())
+        return self.parser.get_references(self.__get_all_ids())
 
     def get_compound_origins(self):
         '''Returns compound origins'''
-        return parsers.get_all_compound_origins(self.__get_all_ids())
+        return self.parser.get_all_compound_origins(self.__get_all_ids())
 
     def get_outgoings(self):
         '''Returns outgoings'''
-        return parsers.get_all_outgoings(self.__get_all_ids())
+        return self.parser.get_all_outgoings(self.__get_all_ids())
 
     def get_incomings(self):
         '''Returns incomings'''
-        return parsers.get_all_incomings(self.__get_all_ids())
+        return self.parser.get_all_incomings(self.__get_all_ids())
 
     def __get_status(self):
         '''Returns status'''
-        return parsers.get_status(self.__chebi_id)
+        return self.parser.get_status(self.__chebi_id)
 
     def __get_all_ids(self):
         '''Returns all ids'''
         if self.__all_ids is None:
-            parent_id = parsers.get_parent_id(self.__chebi_id)
-            self.__all_ids = parsers.get_all_ids(self.__chebi_id
+            parent_id = self.parser.get_parent_id(self.__chebi_id)
+            self.__all_ids = self.parser.get_all_ids(self.__chebi_id
                                                  if math.isnan(parent_id)
                                                  else parent_id)
 
@@ -267,11 +283,12 @@ class ChebiEntity(BaseObject):
         return self.__all_ids
 
 
-def main():
+def main(parser_name="filesystem"):
     '''Example code, showing the instantiation of a ChebiEntity, a call to
-    get_name(), get_outgoings() and the calling of a number of methods of the
-    returned Relation objects.'''
-    chebi_entity = ChebiEntity(15903)
+        get_name(), get_outgoings() and the calling of a number of methods of the
+        returned Relation objects.
+    '''
+    chebi_entity = ChebiEntity(15903, parser=parser_name)
 
     print(chebi_entity.get_name())
 
@@ -281,4 +298,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    main(parser_name)
